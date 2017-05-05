@@ -15,9 +15,9 @@ export default class App extends React.Component {
       events: [],
       lat: "48.13340",
       lng: "11.56681",
-      distance: "5000",
+      distance: "1000",
       since: moment(),
-      until: moment().add(2, "days")
+      until: moment().add(1, "days")
     };
 
     this.onClick = this.onClick.bind(this);
@@ -26,9 +26,32 @@ export default class App extends React.Component {
     this.handleUntilChange = this.handleUntilChange.bind(this);
   }
 
+  componentDidMount() {
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
+    navigator.geolocation.getCurrentPosition(success, error, options);
+    var self = this;
+
+    function success(pos) {
+      var crd = pos.coords;
+      console.log(crd);
+      self.setState({
+        lat: crd.latitude,
+        lng: crd.longitude
+      });
+    }
+    function error(err) {
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+  }
+
   handleSinceChange(date) {
     this.setState({
-      since: date
+      since: date,
+      until: moment(date).add(1, "days")
     });
   }
 
@@ -73,9 +96,6 @@ export default class App extends React.Component {
       .accept("json")
       .end(function(err, res) {
         if (err) throw err;
-
-        console.log(res.body.events);
-
         self.setState({ events: res.body.events });
       });
   }
@@ -145,6 +165,7 @@ export default class App extends React.Component {
                 :
                 {" "}
                 {moment(event.startTime).format("llll")}
+                <p>{event.venue.name}</p>
                 <p>{event.description}</p>
               </li>
             );
@@ -154,8 +175,4 @@ export default class App extends React.Component {
       </div>
     );
   }
-}
-
-function toUnix(date) {
-  return Date.parse(date) / 1000;
 }
