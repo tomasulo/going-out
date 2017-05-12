@@ -66,10 +66,9 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <h2>I WANT TO <em>GO OUT</em></h2>
-        <h2>IN <em>MUNICH</em></h2>
-
+      <div id="controller">
+        <h1>I WANT TO GO OUT</h1>
+        <h1>IN MUNICH</h1>
         <select
           defaultValue={this.state.selectValue}
           onChange={this.handleChange}
@@ -84,43 +83,86 @@ export default class App extends React.Component {
           <button onClick={this.handleClick}>Find events</button>
         </div>
 
-        <EventList events={this.state.events} />
+        <EventContainer events={this.state.events} />
       </div>
     );
   }
 }
 
-class EventList extends React.Component {
+class EventContainer extends React.Component {
   render() {
+    var leftItems = [];
+    var rightItems = [];
+
+    this.props.events.map(function(event, index) {
+      if (index % 2 === 0) {
+        leftItems.push(event);
+      } else {
+        rightItems.push(event);
+      }
+    });
+
     return (
-      <ul>
-        {this.props.events.map(function(event) {
-          return (
-            <EventListItem
-              key={event.id}
-              description={event.description}
-              venue={event.venue.name}
-              name={event.name}
-              startTime={event.startTime}
-            />
-          );
-        })}
-      </ul>
+      <div id="eventContainer">
+        <div className="left">
+          {leftItems.map(function(event) {
+            return (
+              <Event
+                key={event.id}
+                description={event.description}
+                venue={event.venue}
+                name={event.name}
+                startTime={event.startTime}
+                coverPicture={event.coverPicture}
+              />
+            );
+          })}
+        </div>
+
+        <div className="right">
+          {rightItems.map(function(event) {
+            return (
+              <Event
+                key={event.id}
+                description={event.description}
+                venue={event.venue}
+                name={event.name}
+                startTime={event.startTime}
+                coverPicture={event.coverPicture}
+              />
+            );
+          })}
+        </div>
+      </div>
     );
   }
 }
 
-class EventListItem extends React.Component {
+class Event extends React.Component {
   render() {
     return (
-      <li>
-        {this.props.name}
-        :
-        {" "}
-        {moment(this.props.startTime).format("llll")}
-        <p>{this.props.venue.name}</p>
-        <p>{this.props.description}</p>
-      </li>
+      <div className="event">
+        <div className="header">
+          <h3>{this.props.name}</h3>
+          <p className="startTime">
+            {moment(this.props.startTime).format("llll")}
+          </p>
+          <p className="venue">
+            {this.props.venue.name}<br />
+            {this.props.venue.location.street}<br />
+            {this.props.venue.location.zip}
+            ,
+            {" "}
+            {this.props.venue.location.city}
+          </p>
+        </div>
+        <div className="description">
+          <img src={this.props.coverPicture} alt="coverPicture" width="250px" />
+          <pre>
+            {this.props.description}
+          </pre>
+        </div>
+      </div>
     );
   }
 }

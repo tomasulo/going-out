@@ -3,3 +3,62 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+ul {
+  list-style-type: none;
+}
+
+#controller {
+	margin: 20px;
+}
+
+
+.eventPic {
+    width: 250px;
+    float:left; /* add this */
+}
+.description {
+    overflow: hidden; /* if you don't want #second to wrap below #first */
+    margin: 20px;
+}
+.header {
+	margin: 20px;
+}
+.name {
+	margin:0 auto;
+}
+.startTime {
+	margin-bottom: 20px;
+}
+.venue {
+}
+
+#eventContainer {
+	display: flex;
+}
+
+.event {
+    border: 1px solid black;
+    margin: 20px;
+    width: 600px;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+img {
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+pre {
+	white-space: pre-wrap;
+	margin-top: auto;
+}
+
