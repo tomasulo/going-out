@@ -1,4 +1,5 @@
 import React from "react";
+import ReactModal from "react-modal";
 import request from "superagent";
 import moment from "moment";
 
@@ -67,22 +68,23 @@ export default class App extends React.Component {
   render() {
     return (
       <div id="controller">
-        <h1>I WANT TO GO OUT</h1>
-        <h1>IN MUNICH</h1>
-        <select
-          defaultValue={this.state.selectValue}
-          onChange={this.handleChange}
-        >
-          <option value="today">TODAY</option>
-          <option value="tomorrow">TOMORROW</option>
-          <option value="next_weekend">NEXT WEEKEND</option>
-        </select>
+        <div className="header">
+          <h1>I WANT TO GO OUT</h1>
+          <h1>IN MUNICH</h1>
+          <select
+            defaultValue={this.state.selectValue}
+            onChange={this.handleChange}
+          >
+            <option value="today">TODAY</option>
+            <option value="tomorrow">TOMORROW</option>
+            <option value="next_weekend">NEXT WEEKEND</option>
+          </select>
 
-        <div>
-          <p />
-          <button onClick={this.handleClick}>Find events</button>
+          <div>
+            <p />
+            <button onClick={this.handleClick}>Find events</button>
+          </div>
         </div>
-
         <EventContainer events={this.state.events} />
       </div>
     );
@@ -91,57 +93,48 @@ export default class App extends React.Component {
 
 class EventContainer extends React.Component {
   render() {
-    var leftItems = [];
-    var rightItems = [];
-
-    this.props.events.map(function(event, index) {
-      if (index % 2 === 0) {
-        leftItems.push(event);
-      } else {
-        rightItems.push(event);
-      }
-    });
-
     return (
       <div id="eventContainer">
-        <div className="left">
-          {leftItems.map(function(event) {
-            return (
-              <Event
-                key={event.id}
-                description={event.description}
-                venue={event.venue}
-                name={event.name}
-                startTime={event.startTime}
-                coverPicture={event.coverPicture}
-              />
-            );
-          })}
-        </div>
-
-        <div className="right">
-          {rightItems.map(function(event) {
-            return (
-              <Event
-                key={event.id}
-                description={event.description}
-                venue={event.venue}
-                name={event.name}
-                startTime={event.startTime}
-                coverPicture={event.coverPicture}
-              />
-            );
-          })}
-        </div>
+        {this.props.events.map(function(event) {
+          return (
+            <Event
+              key={event.id}
+              description={event.description}
+              venue={event.venue}
+              name={event.name}
+              startTime={event.startTime}
+              coverPicture={event.coverPicture}
+            />
+          );
+        })}
       </div>
     );
   }
 }
 
 class Event extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      showModal: false
+    };
+
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+  }
+
+  handleOpenModal() {
+    console.log("HANDLE OOPEN");
+    this.setState({ showModal: true });
+  }
+
+  handleCloseModal() {
+    this.setState({ showModal: false });
+  }
+
   render() {
     return (
-      <div className="event">
+      <div className="event" onClick={this.handleOpenModal}>
         <div className="header">
           <h3>{this.props.name}</h3>
           <p className="startTime">
@@ -157,11 +150,46 @@ class Event extends React.Component {
           </p>
         </div>
         <div className="description">
-          <img src={this.props.coverPicture} alt="coverPicture" width="250px" />
+          <img src={this.props.coverPicture} alt="coverPicture" />
           <pre>
             {this.props.description}
           </pre>
         </div>
+
+        <ReactModal
+          isOpen={this.state.showModal}
+          contentLabel="Event Details"
+          onRequestClose={this.handleCloseModal}
+          style={{
+            content: {
+              margin: "0 auto",
+              width: "50%"
+            }
+          }}
+        >
+          <button onClick={this.handleCloseModal}>Close</button>
+
+          <div className="header">
+            <h3>{this.props.name}</h3>
+            <p className="startTime">
+              {moment(this.props.startTime).format("llll")}
+            </p>
+            <p className="venue">
+              {this.props.venue.name}<br />
+              {this.props.venue.location.street}<br />
+              {this.props.venue.location.zip}
+              ,
+              {" "}
+              {this.props.venue.location.city}
+            </p>
+          </div>
+          <div className="description">
+            <img src={this.props.coverPicture} alt="coverPicture" />
+            <pre>
+              {this.props.description}
+            </pre>
+          </div>
+        </ReactModal>
       </div>
     );
   }

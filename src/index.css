@@ -4,6 +4,10 @@ body {
   font-family: sans-serif;
 }
 
+.ReactModal__Body--open {
+    overflow: hidden;
+}
+
 ul {
   list-style-type: none;
 }
@@ -12,13 +16,7 @@ ul {
 	margin: 20px;
 }
 
-
-.eventPic {
-    width: 250px;
-    float:left; /* add this */
-}
 .description {
-    overflow: hidden; /* if you don't want #second to wrap below #first */
     margin: 20px;
 }
 .header {
@@ -35,30 +33,25 @@ ul {
 
 #eventContainer {
 	display: flex;
+	flex-flow: row wrap;
 }
 
 .event {
     border: 1px solid black;
     margin: 20px;
-    width: 600px;
-}
-
-.left {
-	float: left;
-}
-
-.right {
-	float: right;
+    width: 500px;
+    height: 600px;
+	overflow: hidden;
 }
 
 img {
     float: left;
     margin-right: 20px;
     margin-bottom: 10px;
+    width: 250px;
 }
 
 pre {
 	white-space: pre-wrap;
 	margin-top: auto;
 }
-
