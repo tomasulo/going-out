@@ -1,9 +1,6 @@
 import React from "react";
 import request from "superagent";
 import moment from "moment";
-import DatePicker from "react-datepicker";
-
-import "react-datepicker/dist/react-datepicker.css";
 
 export default class App extends React.Component {
   constructor() {
@@ -13,78 +10,48 @@ export default class App extends React.Component {
 
     this.state = {
       events: [],
-      lat: "48.13340",
+      lat: "48.13340", // Munich
       lng: "11.56681",
-      distance: "1000",
+      distance: "2000",
       since: moment(),
       until: moment().add(1, "days")
     };
 
-    this.onClick = this.onClick.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.handleSinceChange = this.handleSinceChange.bind(this);
-    this.handleUntilChange = this.handleUntilChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
-    var options = {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
-    };
-    navigator.geolocation.getCurrentPosition(success, error, options);
-    var self = this;
+  handleChange(e) {
+    console.log(e.target.value);
 
-    function success(pos) {
-      var crd = pos.coords;
-      console.log(crd);
-      self.setState({
-        lat: crd.latitude,
-        lng: crd.longitude
-      });
-    }
-    function error(err) {
-      console.warn(`ERROR(${err.code}): ${err.message}`);
-    }
-  }
-
-  handleSinceChange(date) {
-    this.setState({
-      since: date,
-      until: moment(date).add(1, "days")
-    });
-  }
-
-  handleUntilChange(date) {
-    this.setState({
-      until: date
-    });
-  }
-
-  onChange(event) {
-    var value = event.target.value;
-    var name = event.target.name;
-
-    switch (name) {
-      case "lat":
-        this.setState({ lat: value });
+    switch (e.target.value) {
+      case "tomorrow":
+        this.setState({
+          since: moment().add(1, "days"),
+          until: moment().add(2, "days")
+        });
         break;
-      case "lng":
-        this.setState({ lng: value });
+
+      case "next_weekend":
+        const friday = 5;
+        this.setState({
+          since: moment().add(1, "weeks").isoWeekday(friday),
+          until: moment().add(1, "weeks").isoWeekday(friday).add(2, "days")
+        });
         break;
-      case "distance":
-        this.setState({ distance: value });
-        break;
+
       default:
-        console.log("Could not find input field for " + name);
+        this.setState({
+          since: moment(),
+          until: moment().add(1, "days")
+        });
     }
   }
 
-  onClick(event) {
+  handleClick(e) {
     console.log("Clicked");
 
     var self = this;
-
     request
       .get("http://localhost:3050/events")
       .query({ lat: self.state.lat })
@@ -103,75 +70,36 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <p>
-          Latitude:
-          {" "}
-          <input
-            type="text"
-            name="lat"
-            value={this.state.lat}
-            onChange={this.onChange}
-          />
-        </p>
-        <p>
-          Longitude:
-          {" "}
-          <input
-            type="text"
-            name="lng"
-            value={this.state.lng}
-            onChange={this.onChange}
-          />
-        </p>
-        <p>
-          Distance:
-          {" "}
-          <input
-            type="text"
-            name="distance"
-            value={this.state.distance}
-            onChange={this.onChange}
-          />
-        </p>
+        <h2>I WANT TO <em>GO OUT</em></h2>
+        <h2>IN <em>MUNICH</em></h2>
+
+        <select
+          defaultValue={this.state.selectValue}
+          onChange={this.handleChange}
+        >
+          <option value="today">TODAY</option>
+          <option value="tomorrow">TOMORROW</option>
+          <option value="next_weekend">NEXT WEEKEND</option>
+        </select>
 
         <div>
-          Since:
-          {" "}
-          <DatePicker
-            selected={this.state.since}
-            onChange={this.handleSinceChange}
-            dateFormatCalendar="DD/MM/YYYY"
-          />
           <p />
+          <button onClick={this.handleClick}>Find events</button>
+          <ul>
+            {this.state.events.map(function(event) {
+              return (
+                <li key={event.id}>
+                  {event.name}
+                  :
+                  {" "}
+                  {moment(event.startTime).format("llll")}
+                  <p>{event.venue.name}</p>
+                  <p>{event.description}</p>
+                </li>
+              );
+            })}
+          </ul>
         </div>
-
-        <div>
-          Until:
-          {" "}
-          <DatePicker
-            selected={this.state.until}
-            onChange={this.handleUntilChange}
-            dateFormatCalendar="DD/MM/YYYY"
-          />
-          <p />
-        </div>
-
-        <button onClick={this.onClick}>Find events</button>
-        <ul>
-          {this.state.events.map(function(event) {
-            return (
-              <li key={event.id}>
-                {event.name}
-                :
-                {" "}
-                {moment(event.startTime).format("llll")}
-                <p>{event.venue.name}</p>
-                <p>{event.description}</p>
-              </li>
-            );
-          })}
-
-        </ul>
       </div>
     );
   }
