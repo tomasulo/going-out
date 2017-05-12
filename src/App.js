@@ -5,9 +5,7 @@ import moment from "moment";
 export default class App extends React.Component {
   constructor() {
     super();
-
     moment.locale("de");
-
     this.state = {
       events: [],
       lat: "48.13340", // Munich
@@ -22,7 +20,7 @@ export default class App extends React.Component {
   }
 
   handleChange(e) {
-    console.log(e.target.value);
+    console.log("Handle change");
 
     switch (e.target.value) {
       case "tomorrow":
@@ -49,8 +47,7 @@ export default class App extends React.Component {
   }
 
   handleClick(e) {
-    console.log("Clicked");
-
+    console.log("Handle click");
     var self = this;
     request
       .get("http://localhost:3050/events")
@@ -85,22 +82,45 @@ export default class App extends React.Component {
         <div>
           <p />
           <button onClick={this.handleClick}>Find events</button>
-          <ul>
-            {this.state.events.map(function(event) {
-              return (
-                <li key={event.id}>
-                  {event.name}
-                  :
-                  {" "}
-                  {moment(event.startTime).format("llll")}
-                  <p>{event.venue.name}</p>
-                  <p>{event.description}</p>
-                </li>
-              );
-            })}
-          </ul>
         </div>
+
+        <EventList events={this.state.events} />
       </div>
+    );
+  }
+}
+
+class EventList extends React.Component {
+  render() {
+    return (
+      <ul>
+        {this.props.events.map(function(event) {
+          return (
+            <EventListItem
+              key={event.id}
+              description={event.description}
+              venue={event.venue.name}
+              name={event.name}
+              startTime={event.startTime}
+            />
+          );
+        })}
+      </ul>
+    );
+  }
+}
+
+class EventListItem extends React.Component {
+  render() {
+    return (
+      <li>
+        {this.props.name}
+        :
+        {" "}
+        {moment(this.props.startTime).format("llll")}
+        <p>{this.props.venue.name}</p>
+        <p>{this.props.description}</p>
+      </li>
     );
   }
 }
