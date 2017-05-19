@@ -18,6 +18,7 @@ export default class App extends React.Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.sendRequest = this.sendRequest.bind(this);
   }
 
   handleChange(e) {
@@ -47,22 +48,75 @@ export default class App extends React.Component {
     }
   }
 
+  sendRequest(lat, lng) {
+    new Promise(resolve => {
+      return request
+        .get("http://localhost:3050/events")
+        .query({ lat: lat })
+        .query({ lng: lng })
+        .query({ distance: this.state.distance })
+        .query({ since: this.state.since.format("X") })
+        .query({ until: this.state.until.format("X") })
+        .query({ sort: "time" })
+        .accept("json")
+        .end(function(err, res) {
+          if (err) throw err;
+          if (res) {
+            resolve(res.body.events);
+          }
+        });
+    }).then(events => {
+      console.log("Found " + events.length + " events");
+      // TODO filter for existing events (id matches)
+      // TODO sort by date
+      var updated = this.state.events.concat(events);
+      this.setState({
+        events: updated
+      });
+    });
+  }
+
   handleClick(e) {
     console.log("Handle click");
-    var self = this;
-    request
-      .get("http://localhost:3050/events")
-      .query({ lat: self.state.lat })
-      .query({ lng: self.state.lng })
-      .query({ distance: self.state.distance })
-      .query({ since: self.state.since.format("X") })
-      .query({ until: self.state.until.format("X") })
-      .query({ sort: "time" })
-      .accept("json")
-      .end(function(err, res) {
-        if (err) throw err;
-        self.setState({ events: res.body.events });
-      });
+
+    this.setState({
+      events: []
+    });
+
+    var munichCoordinates = [
+      {
+        lat: 48.131726,
+        lng: 11.549377
+      },
+      {
+        lat: 48.106973,
+        lng: 11.558304
+      },
+      {
+        lat: 48.135621,
+        lng: 11.576328
+      },
+      {
+        lat: 48.160818,
+        lng: 11.549549
+      },
+      {
+        lat: 48.170665,
+        lng: 11.625423
+      },
+      {
+        lat: 48.139745,
+        lng: 11.623192
+      },
+      {
+        lat: 48.112016,
+        lng: 11.598473
+      }
+    ];
+
+    munichCoordinates.map(item => {
+      return this.sendRequest(item.lat, item.lng);
+    });
   }
 
   render() {
@@ -95,7 +149,7 @@ class EventContainer extends React.Component {
   render() {
     return (
       <div id="eventContainer">
-        {this.props.events.map(function(event) {
+        {this.props.events.map(event => {
           return (
             <Event
               key={event.id}
@@ -124,7 +178,6 @@ class Event extends React.Component {
   }
 
   handleOpenModal() {
-    console.log("HANDLE OOPEN");
     this.setState({ showModal: true });
   }
 
