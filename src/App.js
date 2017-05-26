@@ -2,6 +2,7 @@ import React from "react";
 import ReactModal from "react-modal";
 import request from "superagent";
 import moment from "moment";
+import DocumentMeta from "react-document-meta";
 
 export default class App extends React.Component {
   constructor() {
@@ -49,9 +50,12 @@ export default class App extends React.Component {
   }
 
   sendRequest(lat, lng) {
+    var apiUrl =
+      "http://ec2-54-93-173-17.eu-central-1.compute.amazonaws.com:3000/events";
+
     new Promise(resolve => {
       return request
-        .get("http://localhost:3050/events")
+        .get(apiUrl)
         .query({ lat: lat })
         .query({ lng: lng })
         .query({ distance: this.state.distance })
@@ -120,8 +124,16 @@ export default class App extends React.Component {
   }
 
   render() {
+    const meta = {
+      meta: {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1.0"
+      }
+    };
+
     return (
       <div id="controller">
+        <DocumentMeta {...meta} />
         <div className="header">
           <h1>I WANT TO GO OUT</h1>
           <h1>IN MUNICH</h1>
@@ -194,7 +206,7 @@ class Event extends React.Component {
             {moment(this.props.startTime).format("llll")}
           </p>
           <p className="venue">
-            {this.props.venue.name}<br />
+            <b>{this.props.venue.name}</b><br />
             {this.props.venue.location.street}<br />
             {this.props.venue.location.zip}
             ,
