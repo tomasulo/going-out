@@ -49,6 +49,8 @@ img {
     margin-right: 20px;
     margin-bottom: 10px;
     width: 250px;
+    height: auto;
+	max-width: 100%;
 }
 
 pre {
