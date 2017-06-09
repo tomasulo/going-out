@@ -1,0 +1,1 @@
+npm run build && aws s3 sync build/ s3:/.going-out.info --region eu-central-1

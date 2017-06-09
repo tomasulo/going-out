@@ -13,8 +13,8 @@ export default class App extends React.Component {
       lat: "48.13340", // Munich
       lng: "11.56681",
       distance: "2000",
-      since: moment(),
-      until: moment().add(1, "days")
+      since: moment().utc(),
+      until: moment().utc().endOf("day")
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -28,23 +28,32 @@ export default class App extends React.Component {
     switch (e.target.value) {
       case "tomorrow":
         this.setState({
-          since: moment().add(1, "days"),
-          until: moment().add(2, "days")
+          since: moment().utc().add(1, "days").startOf("day"),
+          until: moment().utc().add(1, "days").endOf("day")
         });
         break;
 
       case "next_weekend":
         const friday = 5;
         this.setState({
-          since: moment().add(1, "weeks").isoWeekday(friday),
-          until: moment().add(1, "weeks").isoWeekday(friday).add(2, "days")
+          since: moment()
+            .utc()
+            .add(1, "weeks")
+            .isoWeekday(friday)
+            .startOf("day"),
+          until: moment()
+            .utc()
+            .add(1, "weeks")
+            .isoWeekday(friday)
+            .add(2, "days")
+            .endOf("day")
         });
         break;
 
       default:
         this.setState({
-          since: moment(),
-          until: moment().add(1, "days")
+          since: moment().utc(),
+          until: moment().utc().endOf("day")
         });
     }
   }
