@@ -12,56 +12,14 @@ export default class App extends React.Component {
     super();
     moment.locale("de");
     this.state = {
-      events: [],
-      lat: "48.13340", // Munich
-      lng: "11.56681",
-      distance: "2000",
-      since: moment().utc(),
-      until: moment().utc().endOf("day")
+      events: []
     };
 
     this.handleClick = this.handleClick.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
   }
 
-  handleChange(e) {
-    console.log("Handle change");
-
-    switch (e.target.value) {
-      case "tomorrow":
-        this.setState({
-          since: moment().utc().add(1, "days").startOf("day"),
-          until: moment().utc().add(1, "days").endOf("day")
-        });
-        break;
-
-      case "next_weekend":
-        const friday = 5;
-        this.setState({
-          since: moment()
-            .utc()
-            .add(1, "weeks")
-            .isoWeekday(friday)
-            .startOf("day"),
-          until: moment()
-            .utc()
-            .add(1, "weeks")
-            .isoWeekday(friday)
-            .add(2, "days")
-            .endOf("day")
-        });
-        break;
-
-      default:
-        this.setState({
-          since: moment().utc(),
-          until: moment().utc().endOf("day")
-        });
-    }
-  }
-
-  sendRequest(lat, lng) {
+  sendRequest() {
     var apiUrl =
       "https://6milz2rjp1.execute-api.eu-central-1.amazonaws.com/prod/events";
 
@@ -130,7 +88,7 @@ export default class App extends React.Component {
     ];
 
     munichCoordinates.map(item => {
-      return this.sendRequest(item.lat, item.lng);
+      return this.sendRequest();
     });
   }
 
@@ -148,15 +106,6 @@ export default class App extends React.Component {
         <div className="header">
           <h1>I WANT TO GO OUT</h1>
           <h1>IN MUNICH</h1>
-          <select
-            defaultValue={this.state.selectValue}
-            onChange={this.handleChange}
-          >
-            <option value="today">TODAY</option>
-            <option value="tomorrow">TOMORROW</option>
-            <option value="next_weekend">NEXT WEEKEND</option>
-          </select>
-
           <div>
             <p />
             <button onClick={this.handleClick}>Find events</button>
@@ -179,6 +128,7 @@ class EventContainer extends React.Component {
               description={utf8.decode(base64.decode(event.description))}
               venue={event.venue}
               name={event.name}
+              city={event.city}
               startTime={event.since}
               coverPicture={event.imageUrl}
             />
