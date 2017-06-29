@@ -4,6 +4,9 @@ import request from "superagent";
 import moment from "moment";
 import DocumentMeta from "react-document-meta";
 
+var base64 = require('base-64');
+var utf8 = require('utf8');
+
 export default class App extends React.Component {
   constructor() {
     super();
@@ -62,8 +65,6 @@ export default class App extends React.Component {
     var apiUrl =
       "https://6milz2rjp1.execute-api.eu-central-1.amazonaws.com/prod/events";
 
-    console.log(moment().toISOString())
-
     new Promise(resolve => {
       return request
         .post(apiUrl + "/Munich")
@@ -72,17 +73,21 @@ export default class App extends React.Component {
         .end(function(err, res) {
           if (err) throw err;
           if (res) {
-            resolve(res.body.events);
+            resolve(res.body);
           }
         });
     }).then(events => {
+
       console.log("Found " + events.length + " events");
       // TODO filter for existing events (id matches)
       // TODO sort by date
-      var updated = this.state.events.concat(events);
+
+      console.log(events);
+
       this.setState({
-        events: updated
+        events: events
       });
+      
     });
   }
 
@@ -171,11 +176,11 @@ class EventContainer extends React.Component {
           return (
             <Event
               key={event.id}
-              description={event.description}
+              description={utf8.decode(base64.decode(event.description))}
               venue={event.venue}
               name={event.name}
-              startTime={event.startTime}
-              coverPicture={event.coverPicture}
+              startTime={event.since}
+              coverPicture={event.imageUrl}
             />
           );
         })}
@@ -209,15 +214,15 @@ class Event extends React.Component {
         <div className="header">
           <h3>{this.props.name}</h3>
           <p className="startTime">
-            {moment(this.props.startTime).format("llll")}
+            {moment(this.props.since).format("llll")}
           </p>
           <p className="venue">
             <b>{this.props.venue.name}</b><br />
-            {this.props.venue.location.street}<br />
-            {this.props.venue.location.zip}
+            {this.props.venue.street}<br />
+            {this.props.venue.postalcode}
             ,
             {" "}
-            {this.props.venue.location.city}
+            {this.props.city}
           </p>
         </div>
         <div className="description">
@@ -247,11 +252,11 @@ class Event extends React.Component {
             </p>
             <p className="venue">
               {this.props.venue.name}<br />
-              {this.props.venue.location.street}<br />
-              {this.props.venue.location.zip}
+              {this.props.venue.street}<br />
+              {this.props.venue.postalcode}
               ,
               {" "}
-              {this.props.venue.location.city}
+              {this.props.city}
             </p>
           </div>
           <div className="description">
