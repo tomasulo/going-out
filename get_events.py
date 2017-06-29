@@ -30,37 +30,57 @@ for stop in stops(freq=delorean.DAILY, count=7):
         payload = {"lat": lat, "lng": lng, "distance": "2000",
                    "sort": "time", "since": since, "until": until}
 
+        print(str(payload))
+
         r = requests.get(url, params=payload)
         data = r.json()
 
-        for event in data["events"]:
+        if "events" in data:
+          events = data["events"]
 
-            id = event["id"]
-            name = event["name"]
-            since = event["startTime"]
-            city = event["venue"]["location"]["city"]
-            description = event["description"]
-            imageUrl = event["profilePicture"]
-            until = event["endTime"]
-            venue = event["venue"]            
+          print("Found " + str(len(events)) + " events"
 
-            venue = {
-              'name': event["venue"]["name"],
-              'postalcode': event["venue"]["location"]["zip"],
-              'street': event["venue"]["location"]["street"]
-            }
+          for event in events:
 
-            table.put_item(
-              Item={
-                'id': id,
-                'city': city,
-                'description': description,
-                'imageUrl': imageUrl,
-                'name': name,
-                'until': until,
-                'since': since,
-                'venue': venue
-            })
+              id = event["id"]
+              name = event["name"]
+              startTime = event["startTime"]
+              city = event["venue"]["location"]["city"]
+              description = event["description"]
+              imageUrl = event["profilePicture"]
+              endTime = event["endTime"]
+              venue = event["venue"]   
+
+              zip = 0
+              street = " "
+
+              if "street" in event["venue"]["location"]:
+                street = event["venue"]["location"]["street"]
+
+              if "zip" in event["venue"]["location"]:
+                zip = event["venue"]["location"]["zip"]     
+
+              venue = {
+                'name': event["venue"]["name"],
+                'postalcode': zip,
+                'street': street
+              }
+
+              table.put_item(
+                Item={
+                  'id': id,
+                  'city': city,
+                  'description': description,
+                  'imageUrl': imageUrl,
+                  'name': name,
+                  'until': endTime,
+                  'since': startTime,
+                  'venue': venue
+              })
+
+# first aggregate all events for a day
+# log how many -> already filter for duplicates
+# then save to dynamo
 
 # todo rename since to startTime and until to endTime
         
