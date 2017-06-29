@@ -56,40 +56,7 @@ export default class App extends React.Component {
       events: []
     });
 
-    var munichCoordinates = [
-      {
-        lat: 48.131726,
-        lng: 11.549377
-      },
-      {
-        lat: 48.106973,
-        lng: 11.558304
-      },
-      {
-        lat: 48.135621,
-        lng: 11.576328
-      },
-      {
-        lat: 48.160818,
-        lng: 11.549549
-      },
-      {
-        lat: 48.170665,
-        lng: 11.625423
-      },
-      {
-        lat: 48.139745,
-        lng: 11.623192
-      },
-      {
-        lat: 48.112016,
-        lng: 11.598473
-      }
-    ];
-
-    munichCoordinates.map(item => {
-      return this.sendRequest();
-    });
+    return this.sendRequest();    
   }
 
   render() {
@@ -127,7 +94,7 @@ class EventContainer extends React.Component {
               key={event.id}
               description={utf8.decode(base64.decode(event.description))}
               venue={event.venue}
-              name={event.name}
+              name={utf8.decode(base64.decode(event.name))}
               city={event.city}
               startTime={event.since}
               coverPicture={event.imageUrl}
@@ -164,7 +131,7 @@ class Event extends React.Component {
         <div className="header">
           <h3>{this.props.name}</h3>
           <p className="startTime">
-            {moment(this.props.since).format("llll")}
+            {moment(this.props.startTime).format("llll")}
           </p>
           <p className="venue">
             <b>{this.props.venue.name}</b><br />
