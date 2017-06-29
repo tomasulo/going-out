@@ -1,6 +1,8 @@
 import requests
 import delorean
 import json
+import boto3
+
 from delorean import stops
 from delorean import Delorean
 
@@ -14,7 +16,11 @@ munich = (["48.131726", "11.549377"],
 
 url = "http://localhost:3050/events"
 
-for stop in stops(freq=delorean.DAILY, count=1):
+dynamodb = boto3.resource('dynamodb')
+
+table = dynamodb.Table('events')
+
+for stop in stops(freq=delorean.DAILY, count=7):
 
     since = Delorean(stop.start_of_day).epoch
     until = Delorean(stop.end_of_day).epoch
@@ -28,8 +34,33 @@ for stop in stops(freq=delorean.DAILY, count=1):
         data = r.json()
 
         for event in data["events"]:
-            print(json.dumps(event["name"], indent=2))
-            // TODO
-            - extract data from json
-            - call api to store element in dynamodb
-            - be aware of duplicates
+
+            id = event["id"]
+            name = event["name"]
+            since = event["startTime"]
+            city = event["venue"]["location"]["city"]
+            description = event["description"]
+            imageUrl = event["profilePicture"]
+            until = event["endTime"]
+            venue = event["venue"]            
+
+            venue = {
+              'name': event["venue"]["name"],
+              'postalcode': event["venue"]["location"]["zip"],
+              'street': event["venue"]["location"]["street"]
+            }
+
+            table.put_item(
+              Item={
+                'id': id,
+                'city': city,
+                'description': description,
+                'imageUrl': imageUrl,
+                'name': name,
+                'until': until,
+                'since': since,
+                'venue': venue
+            })
+
+# todo rename since to startTime and until to endTime
+        
