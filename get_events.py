@@ -38,45 +38,45 @@ for stop in stops(freq=delorean.DAILY, count=7):
         if "events" in data:
           events = data["events"]
 
-          print("Found " + str(len(events)) + " events"
+          print("Found " + str(len(events)) + " events")
 
           for event in events:
 
-              id = event["id"]
-              name = event["name"]
-              startTime = event["startTime"]
-              city = event["venue"]["location"]["city"]
-              description = event["description"]
-              imageUrl = event["profilePicture"]
-              endTime = event["endTime"]
-              venue = event["venue"]   
+            id = event["id"]
+            name = event["name"]
+            startTime = event["startTime"]
+            city = event["venue"]["location"]["city"]
+            description = event["description"]
+            imageUrl = event["profilePicture"]
+            endTime = event["endTime"]
+            venue = event["venue"]   
 
-              zip = 0
-              street = " "
+            zip = 0
+            street = "undefined"
 
-              if "street" in event["venue"]["location"]:
-                street = event["venue"]["location"]["street"]
+            if "street" in event["venue"]["location"]:
+              street = event["venue"]["location"]["street"]
 
-              if "zip" in event["venue"]["location"]:
-                zip = event["venue"]["location"]["zip"]     
+            if "zip" in event["venue"]["location"]:
+              zip = event["venue"]["location"]["zip"]     
 
-              venue = {
-                'name': event["venue"]["name"],
-                'postalcode': zip,
-                'street': street
-              }
+            venue = {
+              'name': event["venue"]["name"],
+              'postalcode': zip,
+              'street': street
+            }
 
-              table.put_item(
-                Item={
-                  'id': id,
-                  'city': city,
-                  'description': description,
-                  'imageUrl': imageUrl,
-                  'name': name,
-                  'until': endTime,
-                  'since': startTime,
-                  'venue': venue
-              })
+            table.put_item(
+              Item={
+                'id': id,
+                'city': city,
+                'description': description,
+                'imageUrl': imageUrl,
+                'name': name,
+                'until': endTime,
+                'since': startTime,
+                'venue': venue
+            })
 
 # first aggregate all events for a day
 # log how many -> already filter for duplicates
