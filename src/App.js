@@ -60,17 +60,14 @@ export default class App extends React.Component {
 
   sendRequest(lat, lng) {
     var apiUrl =
-      "http://ec2-54-93-173-17.eu-central-1.compute.amazonaws.com:3000/events";
+      "https://6milz2rjp1.execute-api.eu-central-1.amazonaws.com/prod/events";
+
+    console.log(moment().toISOString())
 
     new Promise(resolve => {
       return request
-        .get(apiUrl)
-        .query({ lat: lat })
-        .query({ lng: lng })
-        .query({ distance: this.state.distance })
-        .query({ since: this.state.since.format("X") })
-        .query({ until: this.state.until.format("X") })
-        .query({ sort: "time" })
+        .post(apiUrl + "/Munich")
+        .query({ since: moment().toISOString() })
         .accept("json")
         .end(function(err, res) {
           if (err) throw err;
