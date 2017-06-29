@@ -44,21 +44,25 @@ for stop in stops(freq=delorean.DAILY, count=7):
 
             id = event["id"]
             name = event["name"]
-            startTime = event["startTime"]
-            city = event["venue"]["location"]["city"]
             description = event["description"]
-            imageUrl = event["profilePicture"]
+            startTime = event["startTime"]
             endTime = event["endTime"]
-            venue = event["venue"]   
+            imageUrl = event["profilePicture"]
 
             zip = 0
-            street = "undefined"
+            street = " "
+            city = " "
 
-            if "street" in event["venue"]["location"]:
-              street = event["venue"]["location"]["street"]
+            location = event["venue"]["location"]
 
-            if "zip" in event["venue"]["location"]:
-              zip = event["venue"]["location"]["zip"]     
+            if "street" in location:
+              street = location["street"]
+
+            if "zip" in location:
+              zip = location["zip"]    
+
+            if "city" in location:
+              city = location["city"] 
 
             venue = {
               'name': event["venue"]["name"],
