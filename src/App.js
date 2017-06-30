@@ -5,17 +5,21 @@ import request from "superagent";
 import moment from "moment";
 import DocumentMeta from "react-document-meta";
 
+import NotFound from './components/NotFound';
+
 import {
   BrowserRouter as Router,
   Route,
-  Link
+  Switch,
+  Redirect,
+  browserHistory
 } from 'react-router-dom'
 
 var base64 = require('base-64');
 var utf8 = require('utf8');
 
 const Munich = () => (
-            <h1>MUNICH</h1>
+  <h1>MUNICH</h1>
 )
 
 export default class App extends React.Component {
@@ -83,22 +87,24 @@ export default class App extends React.Component {
       }
     };
 
-    return (
-      <Router>
+  return (
+      <Router history={browserHistory}>
         <div id="controller">
           <DocumentMeta {...meta} />
           <div className="header">
             <h1>I WANT TO GO OUT IN</h1>
             <hr/>
-            <Route exact path="/" component={Munich}/>
-            <Route path="/munich" component={Munich}/>
+            <Switch>
+              <Route path="/munich" component={Munich}/>
+              <Redirect from="/*" to="/munich"/>
+            </Switch>
              <p />
             <button className="myButton" onClick={this.handleClick}>FIND EVENTS</button>
           </div>
           <EventContainer events={this.state.events} />
         </div>
       </Router>
-    );
+  );
   }
 }
 
