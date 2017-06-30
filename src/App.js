@@ -1,11 +1,11 @@
 import React from "react";
 import ReactGA from 'react-ga'; // https://github.com/react-ga/react-ga
-import ReactModal from "react-modal";
 import request from "superagent";
 import moment from "moment";
 import DocumentMeta from "react-document-meta";
 
 import NotFound from './components/NotFound';
+import Event from './components/Event';
 
 import {
   BrowserRouter as Router,
@@ -44,10 +44,13 @@ export default class App extends React.Component {
     var apiUrl =
       "https://6milz2rjp1.execute-api.eu-central-1.amazonaws.com/prod/events";
 
+
+      console.log(moment().utc().format())
+
     new Promise(resolve => {
       return request
         .post(apiUrl + "/Munich")
-        .query({ since: moment().unix() })
+        .query({ since: moment().utc().format()})
         .accept("json")
         .end(function(err, res) {
           if (err) throw err;
@@ -112,7 +115,7 @@ class EventContainer extends React.Component {
               venue={event.venue}
               name={utf8.decode(base64.decode(event.name))}
               city={event.city}
-              startTime={moment.unix(event.startTime).format("llll")}
+              startTime={moment.utc(event.startTime).local().format("llll")}
               coverPicture={event.imageUrl}
             />
           );
@@ -122,85 +125,4 @@ class EventContainer extends React.Component {
   }
 }
 
-class Event extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      showModal: false
-    };
 
-    this.handleOpenModal = this.handleOpenModal.bind(this);
-    this.handleCloseModal = this.handleCloseModal.bind(this);
-  }
-
-  handleOpenModal() {
-    this.setState({ showModal: true });
-  }
-
-  handleCloseModal() {
-    this.setState({ showModal: false });
-  }
-
-  render() {
-    return (
-      <div className="event" onClick={this.handleOpenModal}>
-        <div className="header">
-          <h3>{this.props.name}</h3>
-          <p className="startTime">
-            
-            {this.props.startTime}
-          </p>
-          <p className="venue">
-            <b>{this.props.venue.name}</b><br />
-            {this.props.venue.street}<br />
-            {this.props.venue.zip}
-            ,
-            {" "}
-            {this.props.city}
-          </p>
-        </div>
-        <div className="description">
-          <img src={this.props.coverPicture} alt="coverPicture" />
-          <pre>
-            {this.props.description}
-          </pre>
-        </div>
-
-        <ReactModal
-          isOpen={this.state.showModal}
-          contentLabel="Event Details"
-          onRequestClose={this.handleCloseModal}
-          style={{
-            content: {
-              margin: "0 auto",
-              width: "50%"
-            }
-          }}
-        >
-          <button onClick={this.handleCloseModal}>Close</button>
-
-          <div className="header">
-            <h3>{this.props.name}</h3>
-            <p className="startTime">
-              {moment(this.props.startTime).format("llll")}
-            </p>
-            <p className="venue">
-              {this.props.venue.name}<br />
-              {this.props.venue.street}<br />
-              {this.props.venue.postalcode}
-              ,
-              {" "}
-              {this.props.city}
-            </p>
-          </div>
-          <div className="description">
-            <img src={this.props.coverPicture} alt="coverPicture" />
-            <pre>
-              {this.props.description}
-            </pre>
-          </div>
-        </ReactModal>
-      </div>
-    );
-  }
-}
