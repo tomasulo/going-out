@@ -9,6 +9,7 @@
     "react-datepicker": "^0.46.0",
     "react-document-meta": "^2.1.2",
     "react-dom": "^15.5.4",
+    "react-ga": "^2.2.0",
     "react-modal": "^1.7.7",
     "react-redux": "^5.0.4",
     "react-router": "^4.1.1",

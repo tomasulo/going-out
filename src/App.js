@@ -1,4 +1,5 @@
 import React from "react";
+import ReactGA from 'react-ga'; // https://github.com/react-ga/react-ga
 import ReactModal from "react-modal";
 import request from "superagent";
 import moment from "moment";
@@ -27,6 +28,11 @@ export default class App extends React.Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
+
+        // Add your tracking ID created from https://analytics.google.com/analytics/web/#home/
+    ReactGA.initialize('UA-56053032-2');
+    // This just needs to be called once since we have no routes in this case.
+    ReactGA.pageview(window.location.pathname);
   }
 
   sendRequest() {
