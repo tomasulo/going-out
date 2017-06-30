@@ -25,12 +25,13 @@ const Munich = () => (
 export default class App extends React.Component {
   constructor() {
     super();
+
     moment.locale("de");
+
     this.state = {
       events: []
     };
 
-    this.handleClick = this.handleClick.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
 
         // Add your tracking ID created from https://analytics.google.com/analytics/web/#home/
@@ -69,14 +70,12 @@ export default class App extends React.Component {
     });
   }
 
-  handleClick(e) {
-    console.log("Handle click");
-
+  componentDidMount() {
     this.setState({
       events: []
     });
 
-    return this.sendRequest();    
+    return this.sendRequest();  
   }
 
   render() {
@@ -98,8 +97,6 @@ export default class App extends React.Component {
               <Route path="/munich" component={Munich}/>
               <Redirect from="/*" to="/munich"/>
             </Switch>
-             <p />
-            <button className="myButton" onClick={this.handleClick}>FIND EVENTS</button>
           </div>
           <EventContainer events={this.state.events} />
         </div>
