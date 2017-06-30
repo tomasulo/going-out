@@ -48,7 +48,10 @@ for stop in stops(freq=delorean.DAILY, count=7):
             description = event["description"]
 
             startTime = parse(event["startTime"]).shift("UTC").datetime.isoformat()
-            endTime = parse(event["endTime"]).shift("UTC").datetime.isoformat()
+
+            endTime = event["endTime"]
+            if endTime:
+              endTime = parse(endTime).shift("UTC").datetime.isoformat()
 
             imageUrl = event["profilePicture"]
             category = event["category"]
