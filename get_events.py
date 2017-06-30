@@ -5,6 +5,7 @@ import boto3
 
 from delorean import stops
 from delorean import Delorean
+from delorean import parse
 
 munich = (["48.131726", "11.549377"],
           ["48.106973", "11.558304"],
@@ -45,12 +46,10 @@ for stop in stops(freq=delorean.DAILY, count=7):
             id = event["id"]
             name = event["name"]
             description = event["description"]
-            startTime = event["startTime"]
-            endTime = event["endTime"]
+            startTime = parse(event["startTime"]).epoch
+            endTime = parse(event["startTime"]).epoch
             imageUrl = event["profilePicture"]
             category = event["category"]
-
-            print(str(category))
 
             zip = " "
             street = " "
@@ -80,15 +79,8 @@ for stop in stops(freq=delorean.DAILY, count=7):
                 'description': description,
                 'imageUrl': imageUrl,
                 'name': name,
-                'endTime': endTime,
-                'startTime': startTime,
+                'endTime': str(endTime),
+                'startTime': str(startTime),
                 'category': str(category),
                 'venue': venue
             })
-
-# first aggregate all events for a day
-# log how many -> already filter for duplicates
-# then save to dynamo
-
-# todo rename since to startTime and until to endTime
-        

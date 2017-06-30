@@ -47,7 +47,7 @@ export default class App extends React.Component {
     new Promise(resolve => {
       return request
         .post(apiUrl + "/Munich")
-        .query({ since: moment().toISOString() })
+        .query({ since: moment().unix() })
         .accept("json")
         .end(function(err, res) {
           if (err) throw err;
@@ -56,13 +56,8 @@ export default class App extends React.Component {
           }
         });
     }).then(events => {
-
       console.log("Found " + events.length + " events");
-      // TODO filter for existing events (id matches)
-      // TODO sort by date
-
       console.log(events);
-
       this.setState({
         events: events
       });
@@ -117,7 +112,7 @@ class EventContainer extends React.Component {
               venue={event.venue}
               name={utf8.decode(base64.decode(event.name))}
               city={event.city}
-              startTime={event.startTime}
+              startTime={moment.unix(event.startTime).format("llll")}
               coverPicture={event.imageUrl}
             />
           );
@@ -152,7 +147,8 @@ class Event extends React.Component {
         <div className="header">
           <h3>{this.props.name}</h3>
           <p className="startTime">
-            {moment(this.props.startTime).format("llll")}
+            
+            {this.props.startTime}
           </p>
           <p className="venue">
             <b>{this.props.venue.name}</b><br />
