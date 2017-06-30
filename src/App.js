@@ -96,7 +96,7 @@ class EventContainer extends React.Component {
               venue={event.venue}
               name={utf8.decode(base64.decode(event.name))}
               city={event.city}
-              startTime={event.since}
+              startTime={event.startTime}
               coverPicture={event.imageUrl}
             />
           );
@@ -136,7 +136,7 @@ class Event extends React.Component {
           <p className="venue">
             <b>{this.props.venue.name}</b><br />
             {this.props.venue.street}<br />
-            {this.props.venue.postalcode}
+            {this.props.venue.zip}
             ,
             {" "}
             {this.props.city}

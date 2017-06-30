@@ -48,8 +48,11 @@ for stop in stops(freq=delorean.DAILY, count=7):
             startTime = event["startTime"]
             endTime = event["endTime"]
             imageUrl = event["profilePicture"]
+            category = event["category"]
 
-            zip = 0
+            print(str(category))
+
+            zip = " "
             street = " "
             city = " "
 
@@ -66,7 +69,7 @@ for stop in stops(freq=delorean.DAILY, count=7):
 
             venue = {
               'name': event["venue"]["name"],
-              'postalcode': zip,
+              'zip': zip,
               'street': street
             }
 
@@ -77,8 +80,9 @@ for stop in stops(freq=delorean.DAILY, count=7):
                 'description': description,
                 'imageUrl': imageUrl,
                 'name': name,
-                'until': endTime,
-                'since': startTime,
+                'endTime': endTime,
+                'startTime': startTime,
+                'category': str(category),
                 'venue': venue
             })
 
