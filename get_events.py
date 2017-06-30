@@ -46,8 +46,10 @@ for stop in stops(freq=delorean.DAILY, count=7):
             id = event["id"]
             name = event["name"]
             description = event["description"]
-            startTime = parse(event["startTime"]).epoch
-            endTime = parse(event["startTime"]).epoch
+
+            startTime = parse(event["startTime"]).shift("UTC")
+            endTime = parse(event["endTime"]).shift("UTC")
+
             imageUrl = event["profilePicture"]
             category = event["category"]
 
@@ -79,8 +81,8 @@ for stop in stops(freq=delorean.DAILY, count=7):
                 'description': description,
                 'imageUrl': imageUrl,
                 'name': name,
-                'endTime': str(endTime),
-                'startTime': str(startTime),
+                'startTime': str(startTime.datetime),
+                'endTime': str(endTime.datetime),
                 'category': str(category),
                 'venue': venue
             })
