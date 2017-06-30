@@ -1,0 +1,42 @@
+{
+  "TableName": "events",
+  "Item": {
+    "id": {
+      "S": "$input.path('$.id')"
+    },
+    "description": {
+      "S": "$input.path('$.description')"
+    },
+    "name": {
+      "S": "$input.path('$.name')"
+    },
+    "startTime": {
+      "S": "$input.path('$.startTime')"
+    },
+    "endTime": {
+      "S": "$input.path('$.endTime')"
+    },
+    "city": {
+      "S": "$input.path('$.city')"
+    },
+    "imageUrl": {
+      "S": "$input.path('$.imageUrl')"
+    },
+    "category": {
+      "S": "$input.path('$.category')"
+    },
+    "venue": {
+      "M": {
+        "name": {
+          "S": "$input.path('$.venue.name')"
+        },
+        "street": {
+          "S": "$input.path('$.venue.street')"
+        },
+        "zip": {
+          "S": "$input.path('$.venue.zip')"
+        }
+      }
+    }
+  }
+}
