@@ -4,8 +4,18 @@ import request from "superagent";
 import moment from "moment";
 import DocumentMeta from "react-document-meta";
 
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
+
 var base64 = require('base-64');
 var utf8 = require('utf8');
+
+const Munich = () => (
+            <h1>MUNICH</h1>
+)
 
 export default class App extends React.Component {
   constructor() {
@@ -68,18 +78,20 @@ export default class App extends React.Component {
     };
 
     return (
-      <div id="controller">
-        <DocumentMeta {...meta} />
-        <div className="header">
-          <h1>I WANT TO GO OUT</h1>
-          <h1>IN MUNICH</h1>
-          <div>
-            <p />
-            <button onClick={this.handleClick}>Find events</button>
+      <Router>
+        <div id="controller">
+          <DocumentMeta {...meta} />
+          <div className="header">
+            <h1>I WANT TO GO OUT IN</h1>
+            <hr/>
+            <Route exact path="/" component={Munich}/>
+            <Route path="/munich" component={Munich}/>
+             <p />
+            <button className="myButton" onClick={this.handleClick}>FIND EVENTS</button>
           </div>
+          <EventContainer events={this.state.events} />
         </div>
-        <EventContainer events={this.state.events} />
-      </div>
+      </Router>
     );
   }
 }
