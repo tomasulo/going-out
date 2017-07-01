@@ -2,10 +2,12 @@ import requests
 import delorean
 import json
 import boto3
+from dateutil import parser
+import pytz
+import datetime
 
 from delorean import stops
 from delorean import Delorean
-from delorean import parse
 
 munich = (["48.131726", "11.549377"],
           ["48.106973", "11.558304"],
@@ -47,11 +49,11 @@ for stop in stops(freq=delorean.DAILY, count=7):
             name = event["name"]
             description = event["description"]
 
-            startTime = parse(event["startTime"]).shift("UTC").datetime.isoformat()
+            startTime = parser.parse(event["startTime"]).astimezone(pytz.utc).isoformat()
 
             endTime = event["endTime"]
             if endTime:
-              endTime = parse(endTime).shift("UTC").datetime.isoformat()
+              endTime = parser.parse(event["endTime"]).astimezone(pytz.utc).isoformat()
 
             imageUrl = event["profilePicture"]
             category = event["category"]
