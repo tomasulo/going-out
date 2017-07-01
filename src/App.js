@@ -44,13 +44,15 @@ export default class App extends React.Component {
     var apiUrl =
       "https://6milz2rjp1.execute-api.eu-central-1.amazonaws.com/prod/events";
 
+    console.log(moment().utc().format())
 
-      console.log(moment().utc().format())
+    var apiKey = "bkYSxHm3GR544sLKxIqT19ytPblngJYMlQEuvFj9"
 
     new Promise(resolve => {
       return request
         .post(apiUrl + "/Munich")
         .query({ since: moment().utc().format()})
+        .set('X-API-Key', apiKey)
         .accept("json")
         .end(function(err, res) {
           if (err) throw err;
