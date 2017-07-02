@@ -53,11 +53,14 @@ export default class App extends React.Component {
     var pathTemplate = '/events/Munich'
     var method = "POST"
 
+    var accessKey = process.env.REACT_APP_AWS_ACCESS_KEY
+    var secretKey = process.env.REACT_APP_AWS_SECRET_KEY
+
     var apigClient = apigClientFactory.newClient({
       invokeUrl: 'https://6milz2rjp1.execute-api.eu-central-1.amazonaws.com/test',
-      accessKey: 'AKIAJ66DLWXD2XBCDY4Q',
-      secretKey: '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',
-      region: 'eu-central-1' // OPTIONAL: The region where the API is deployed, by default this parameter is set to us-east-1
+      accessKey: accessKey,
+      secretKey: secretKey,
+      region: 'eu-central-1'
     });
 
     // TODO add Promise
