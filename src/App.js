@@ -34,40 +34,42 @@ export default class App extends React.Component {
 
     this.sendRequest = this.sendRequest.bind(this);
 
-        // Add your tracking ID created from https://analytics.google.com/analytics/web/#home/
+    // Add your tracking ID created from https://analytics.google.com/analytics/web/#home/
     ReactGA.initialize('UA-56053032-2');
     // This just needs to be called once since we have no routes in this case.
+    // TODO make this work on every page?
     ReactGA.pageview(window.location.pathname);
   }
 
   sendRequest() {
-    var apiUrl =
-      "https://6milz2rjp1.execute-api.eu-central-1.amazonaws.com/prod/events";
+    var apigClientFactory = require('aws-api-gateway-client').default;
 
-    console.log(moment().utc().format())
+    var params = {}
+    var additionalParams = {
+      queryParams: {
+        since:  moment().utc().format()
+      }
+    }
+    var pathTemplate = '/events/Munich'
+    var method = "POST"
 
-    var apiKey = "bkYSxHm3GR544sLKxIqT19ytPblngJYMlQEuvFj9"
-
-    new Promise(resolve => {
-      return request
-        .post(apiUrl + "/Munich")
-        .query({ since: moment().utc().format()})
-        .set('X-API-Key', apiKey)
-        .accept("json")
-        .end(function(err, res) {
-          if (err) throw err;
-          if (res) {
-            resolve(res.body);
-          }
-        });
-    }).then(events => {
-      console.log("Found " + events.length + " events");
-      console.log(events);
-      this.setState({
-        events: events
-      });
-      
+    var apigClient = apigClientFactory.newClient({
+      invokeUrl: 'https://6milz2rjp1.execute-api.eu-central-1.amazonaws.com/test',
+      accessKey: 'AKIAJ66DLWXD2XBCDY4Q',
+      secretKey: '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',
+      region: 'eu-central-1' // OPTIONAL: The region where the API is deployed, by default this parameter is set to us-east-1
     });
+
+    // TODO add Promise
+    apigClient.invokeApi(params, pathTemplate, method, additionalParams)
+      .then(response => {
+        var events = response.data
+        console.log("Found " + events.length + " events");
+        console.log(events);
+        this.setState({
+          events: events
+        });
+      });
   }
 
   componentDidMount() {
