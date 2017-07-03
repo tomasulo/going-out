@@ -57,7 +57,7 @@ export default class App extends React.Component {
     var secretKey = process.env.REACT_APP_AWS_SECRET_KEY
 
     var apigClient = apigClientFactory.newClient({
-      invokeUrl: 'https://6milz2rjp1.execute-api.eu-central-1.amazonaws.com/test',
+      invokeUrl: 'https://6milz2rjp1.execute-api.eu-central-1.amazonaws.com/prod',
       accessKey: accessKey,
       secretKey: secretKey,
       region: 'eu-central-1'
