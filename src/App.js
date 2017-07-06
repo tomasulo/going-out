@@ -69,6 +69,7 @@ const EventList = ({ match }) => (
 class EventContainer extends React.Component {
     constructor() {
         super();
+        moment.locale("de")
         this.state = {
             events: []
         };
@@ -80,7 +81,6 @@ class EventContainer extends React.Component {
     }
 
     sendRequest() {
-        console.log("THE CITY IS:" + this.props.city)
 
         var apigClientFactory = require('aws-api-gateway-client').default;
 
@@ -90,7 +90,19 @@ class EventContainer extends React.Component {
             since:  moment().utc().format()
           }
         }
-        var pathTemplate = '/events/Munich'
+
+        var city = this.props.city.toLowerCase()
+
+        // TODO refactor
+        if(city == "passau") {
+            var pathTemplate = '/events/Passau'
+        } else if(city == "munich") {
+            var pathTemplate = '/events/Munich'
+        } else {
+            // TODO render error
+            console.log("City not supported yet")
+            return
+        }
         var method = "POST"
 
         var accessKey = process.env.REACT_APP_AWS_ACCESS_KEY
@@ -107,7 +119,6 @@ class EventContainer extends React.Component {
           .then(response => {
             var events = response.data
             console.log("Found " + events.length + " events");
-            console.log(events);
             this.setState({
               events: events
             });
