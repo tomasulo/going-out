@@ -94,10 +94,8 @@ class EventContainer extends React.Component {
         var city = this.props.city.toLowerCase()
 
         // TODO refactor
-        if(city == "passau") {
-            var pathTemplate = '/events/Passau'
-        } else if(city == "munich") {
-            var pathTemplate = '/events/Munich'
+        if(city == "passau" || city == "munich") {
+            var pathTemplate = '/events/' + city
         } else {
             // TODO render error
             console.log("City not supported yet")
