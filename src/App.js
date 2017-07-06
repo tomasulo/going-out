@@ -80,14 +80,6 @@ export default class App extends React.Component {
       });
   }
 
-  componentDidMount() {
-    this.setState({
-      events: []
-    });
-
-    return this.sendRequest();  
-  }
-
   render() {
     const meta = {
       meta: {
@@ -109,24 +101,74 @@ export default class App extends React.Component {
                     <Link to={'/passau'}><h3>Passau</h3></Link>
                 </div>
             )}/>
-            <Route path="/munich" component={Munich}/>
-            <Route path="/passau" component={Passau}/>
+            <Route path='/:city' component={EventList}/>
           </div>
-          <EventContainer events={this.state.events} />
         </div>
       </Router>
   );
   }
 }
 
-const EventList = () => {
-}
+const EventList = ({ match }) => (
+    <div>
+        <h1>{match.params.city.toUpperCase()}</h1>
+        <EventContainer city={match.params.city.toUpperCase()} />
+    </div>
+)
 
 class EventContainer extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            events: []
+        };
+        this.sendRequest = this.sendRequest.bind(this);
+    }
+
+    componentDidMount() {
+        return this.sendRequest();
+    }
+
+    sendRequest() {
+        console.log("THE CITY IS:" + this.props.city)
+
+        var apigClientFactory = require('aws-api-gateway-client').default;
+
+        var params = {}
+        var additionalParams = {
+          queryParams: {
+            since:  moment().utc().format()
+          }
+        }
+        var pathTemplate = '/events/Munich'
+        var method = "POST"
+
+        var accessKey = process.env.REACT_APP_AWS_ACCESS_KEY
+        var secretKey = process.env.REACT_APP_AWS_SECRET_KEY
+
+        var apigClient = apigClientFactory.newClient({
+          invokeUrl: 'https://6milz2rjp1.execute-api.eu-central-1.amazonaws.com/prod',
+          accessKey: accessKey,
+          secretKey: secretKey,
+          region: 'eu-central-1'
+        });
+
+        // TODO add Promise
+        apigClient.invokeApi(params, pathTemplate, method, additionalParams)
+          .then(response => {
+            var events = response.data
+            console.log("Found " + events.length + " events");
+            console.log(events);
+            this.setState({
+              events: events
+            });
+          });
+    }
+
   render() {
     return (
       <div id="eventContainer">
-        {this.props.events.map(event => {
+        {this.state.events.map(event => {
           return (
             <Event
               key={event.id}
