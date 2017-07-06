@@ -51,7 +51,10 @@ export default class App extends React.Component {
                         <Link to={'/passau'}><h3>Passau</h3></Link>
                     </div>
                 )}/>
-                <Route path='/:city' component={EventList}/>
+                <Switch>
+                    <Route path='/:city' component={EventList}/>
+                    <Redirect from="/:city" to="/:city"/>
+                </Switch>
               </div>
             </div>
           </Router>
