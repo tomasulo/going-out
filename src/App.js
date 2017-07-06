@@ -9,6 +9,7 @@ import Event from './components/Event';
 
 import {
   BrowserRouter as Router,
+  Link,
   Route,
   Switch,
   Redirect,
@@ -20,6 +21,10 @@ var utf8 = require('utf8');
 
 const Munich = () => (
   <h1>MUNICH</h1>
+)
+
+const Passau = () => (
+  <h1>PASSAU</h1>
 )
 
 export default class App extends React.Component {
@@ -98,16 +103,23 @@ export default class App extends React.Component {
           <div className="header">
             <h1>I WANT TO GO OUT IN</h1>
             <hr/>
-            <Switch>
-              <Route path="/munich" component={Munich}/>
-              <Redirect from="/*" to="/munich"/>
-            </Switch>
+            <Route exact={true} path="/" render={() => (
+                <div>
+                    <Link to={'/munich'}><h3>Munich</h3></Link>
+                    <Link to={'/passau'}><h3>Passau</h3></Link>
+                </div>
+            )}/>
+            <Route path="/munich" component={Munich}/>
+            <Route path="/passau" component={Passau}/>
           </div>
           <EventContainer events={this.state.events} />
         </div>
       </Router>
   );
   }
+}
+
+const EventList = () => {
 }
 
 class EventContainer extends React.Component {
