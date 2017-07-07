@@ -94,7 +94,7 @@ class EventContainer extends React.Component {
         var city = this.props.city.toLowerCase()
 
         // TODO refactor
-        if(city == "passau" || city == "munich") {
+        if(city === "passau" || city === "munich") {
             var pathTemplate = '/events/' + city
         } else {
             // TODO render error
@@ -127,13 +127,18 @@ class EventContainer extends React.Component {
     return (
       <div id="eventContainer">
         {this.state.events.map(event => {
+            var city = event.city.capitalize()
+            if(city === 'Munich') {
+              city = 'München'
+            }
+
           return (
             <Event
               key={event.id}
               description={utf8.decode(base64.decode(event.description))}
               venue={event.venue}
               name={utf8.decode(base64.decode(event.name))}
-              city={event.city}
+              city={city}
               startTime={moment.utc(event.startTime).local().format("llll")}
               coverPicture={event.imageUrl}
             />
@@ -144,4 +149,6 @@ class EventContainer extends React.Component {
   }
 }
 
-
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
