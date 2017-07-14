@@ -26,7 +26,7 @@ export default class EventContainer extends React.Component {
         this.state = {
             events: [],
             textFilter: '',
-            dateFilter: ''
+            dateFilter: moment.utc().format("MM/DD/YYYY")
         };
         this.sendRequest = this.sendRequest.bind(this);
     }
