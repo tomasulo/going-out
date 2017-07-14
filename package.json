@@ -6,7 +6,7 @@
     "aws-api-gateway-client": "^0.2.7",
     "base-64": "^0.1.0",
     "moment": "^2.18.1",
-    "react": "^15.5.4",
+    "react": "^15.6.1",
     "react-datepicker": "^0.46.0",
     "react-document-meta": "^2.1.2",
     "react-dom": "^15.6.1",
@@ -15,6 +15,7 @@
     "react-redux": "^5.0.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
+    "react-text-filter": "^3.0.0",
     "redux": "^3.6.0",
     "superagent": "^3.5.2",
     "utf8": "^2.1.2"
