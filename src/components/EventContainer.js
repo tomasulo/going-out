@@ -2,6 +2,8 @@ import React from "react";
 import Event from "./Event";
 import moment from "moment";
 import {TextFilter} from "react-text-filter";
+import DayPicker from 'react-day-picker';
+import 'react-day-picker/lib/style.css';
 
 // TODO why do I need var here?
 var base64 = require('base-64');
@@ -9,10 +11,13 @@ var utf8 = require('utf8');
 
 const cities = ["munich", "passau", "regensburg"];
 
-const eventFilter = filter => event =>
+const textFilter = filter => event =>
 event.props.description.toLowerCase().indexOf(filter.toLowerCase()) !== -1
 || event.props.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1
 || event.props.venue.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+
+const dateFilter = filter => event =>
+moment.utc(event.props.startTime).format("MM/DD/YYYY") === filter;
 
 export default class EventContainer extends React.Component {
     constructor() {
@@ -20,7 +25,8 @@ export default class EventContainer extends React.Component {
         moment.locale("de")
         this.state = {
             events: [],
-            filter: '',
+            textFilter: '',
+            dateFilter: ''
         };
         this.sendRequest = this.sendRequest.bind(this);
     }
@@ -88,17 +94,33 @@ export default class EventContainer extends React.Component {
     }
 
     render() {
-        const filteredEvents = this.state.filter ?
-            this.state.events.filter(eventFilter(this.state.filter)) :
-            this.state.events.slice(0);
+        const hasTextFilter = !!this.state.textFilter;
+        const hasDateFilter = !!this.state.dateFilter;
+        console.log("date filter" + hasDateFilter);
+        console.log("text filter" + hasTextFilter);
+
+        var filteredEvents;
+        if (hasTextFilter) {
+            filteredEvents = this.state.events.filter(textFilter(this.state.textFilter));
+        } else if (hasDateFilter) {
+            filteredEvents = this.state.events.filter(dateFilter(this.state.dateFilter));
+        } else {
+            filteredEvents = this.state.events.slice(0);
+        }
 
         return (
             <div>
-                <TextFilter
-                    onFilter={({target: {value: filter}}) => this.setState({filter})}
-                    placeholder="Filter"
-                    className="event-filter"/>
-                <div id="eventContainer">
+                <DayPicker
+                    className={"center"}
+                    onDayClick={day => this.setState({dateFilter: moment.utc(day).format("MM/DD/YYYY")})}/>
+                <br/>
+                <div className="center">
+                    <TextFilter
+                        onFilter={({target: {value: textFilter}}) => this.setState({textFilter})}
+                        placeholder="Search"
+                        className="center"/>
+                </div>
+                <div id="eventContainer" className="center">
                     {filteredEvents.map(event => {
                         return event;
                     })}

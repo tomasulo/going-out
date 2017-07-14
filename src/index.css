@@ -4,6 +4,10 @@ body {
   font-family: sans-serif;
 }
 
+hr {
+    width: 350px;
+}
+
 .ReactModal__Body--open {
     overflow: hidden;
 }
@@ -21,6 +25,7 @@ ul {
 }
 .header {
 	margin: 20px;
+    text-align: center;
 }
 .name {
 	margin:0 auto;
@@ -28,11 +33,14 @@ ul {
 .startTime {
 	margin-bottom: 20px;
 }
-.venue {
+
+.center {
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 #eventContainer {
-	display: flex;
 	flex-flow: row wrap;
 }
 
