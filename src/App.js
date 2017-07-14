@@ -16,10 +16,7 @@ const Events = ({match}) => (
 export default class App extends React.Component {
     constructor() {
         super();
-        // Add your tracking ID created from https://analytics.google.com/analytics/web/#home/
         ReactGA.initialize('UA-56053032-2');
-        // This just needs to be called once since we have no routes in this case.
-        // TODO make this work on every page?
         ReactGA.pageview(window.location.pathname);
     }
 
@@ -42,6 +39,7 @@ export default class App extends React.Component {
                             <div>
                                 <Link to={'/munich'}><h3>Munich</h3></Link>
                                 <Link to={'/passau'}><h3>Passau</h3></Link>
+                                <Link to={'/regensburg'}><h3>Regensburg</h3></Link>
                             </div>
                         )}/>
                         <Route path='/:city' component={Events}/>

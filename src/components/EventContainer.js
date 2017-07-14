@@ -7,7 +7,8 @@ import {TextFilter} from "react-text-filter";
 var base64 = require('base-64');
 var utf8 = require('utf8');
 
-// TODO refactor
+const cities = ["munich", "passau", "regensburg"];
+
 const eventFilter = filter => event =>
 event.props.description.toLowerCase().indexOf(filter.toLowerCase()) !== -1
 || event.props.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1
@@ -41,8 +42,7 @@ export default class EventContainer extends React.Component {
 
         var city = this.props.city.toLowerCase()
 
-        // TODO refactor
-        if (city === "passau" || city === "munich") {
+        if (cities.includes(city)) {
             var pathTemplate = '/events/' + city
         } else {
             // TODO render error
