@@ -7,6 +7,12 @@ import {TextFilter} from "react-text-filter";
 var base64 = require('base-64');
 var utf8 = require('utf8');
 
+// TODO refactor
+const eventFilter = filter => event =>
+event.props.description.toLowerCase().indexOf(filter.toLowerCase()) !== -1
+|| event.props.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1
+|| event.props.venue.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+
 export default class EventContainer extends React.Component {
     constructor() {
         super();
@@ -57,23 +63,20 @@ export default class EventContainer extends React.Component {
 
         apigClient.invokeApi(params, pathTemplate, method, additionalParams)
             .then(response => {
-                const events = [];
-                response.data.map((eventData) => {
+                const events = response.data.map((eventData) => {
                     var city = eventData.city.capitalize()
                     if (city === 'Munich') {
                         city = 'München'
                     }
-                    events.push(
-                        <Event
-                            key={eventData.id}
-                            description={utf8.decode(base64.decode(eventData.description))}
-                            venue={eventData.venue}
-                            name={utf8.decode(base64.decode(eventData.name))}
-                            city={city}
-                            startTime={moment.utc(eventData.startTime).local().format("llll")}
-                            coverPicture={eventData.imageUrl}
-                        />
-                    );
+                    return <Event
+                        key={eventData.id}
+                        description={utf8.decode(base64.decode(eventData.description))}
+                        venue={eventData.venue}
+                        name={utf8.decode(base64.decode(eventData.name))}
+                        city={city}
+                        startTime={moment.utc(eventData.startTime).local().format("llll")}
+                        coverPicture={eventData.imageUrl}
+                    />
                 });
 
                 console.log("Found " + events.length + " events");
@@ -105,12 +108,6 @@ export default class EventContainer extends React.Component {
     }
 }
 
-// TODO refactor
-const eventFilter = filter => event =>
-event.props.description.toLowerCase().indexOf(filter.toLowerCase()) !== -1
-|| event.props.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1
-|| event.props.venue.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
-
 String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
-}
+};
