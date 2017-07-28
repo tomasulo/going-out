@@ -2,8 +2,7 @@ import React from "react";
 import Event from "./Event";
 import moment from "moment";
 import {TextFilter} from "react-text-filter";
-import DayPicker from 'react-day-picker';
-import 'react-day-picker/lib/style.css';
+import "react-day-picker/lib/style.css";
 
 // TODO why do I need var here?
 var base64 = require('base-64');
@@ -22,11 +21,12 @@ moment.utc(event.props.startTime).format("MM/DD/YYYY") === filter;
 export default class EventContainer extends React.Component {
     constructor() {
         super();
-        moment.locale("de")
+        moment.locale("de");
         this.state = {
             events: [],
+            filteredEvents: [],
+            filteredByDate: false,
             textFilter: '',
-            dateFilter: moment.utc().format("MM/DD/YYYY")
         };
         this.sendRequest = this.sendRequest.bind(this);
     }
@@ -70,7 +70,7 @@ export default class EventContainer extends React.Component {
         apigClient.invokeApi(params, pathTemplate, method, additionalParams)
             .then(response => {
                 const events = response.data.map((eventData) => {
-                    var city = eventData.city.capitalize()
+                    let city = eventData.city.capitalize();
                     if (city === 'Munich') {
                         city = 'München'
                     }
@@ -88,45 +88,76 @@ export default class EventContainer extends React.Component {
                 console.log("Found " + events.length + " events");
 
                 this.setState({
-                    events: events
+                    events: events,
+                    filteredEvents: events
                 });
             });
     }
 
+    filterByToday = () => {
+        console.log("Filter by today");
+        let today = this.state.events.filter(dateFilter(moment.utc().format("MM/DD/YYYY")));
+        this.setState({
+            filteredEvents: today,
+            filteredByDate: true
+        });
+    };
+
+    filterByTomorrow = () => {
+        console.log("Filter by tomorrow");
+        let tomorrow = this.state.events.filter(dateFilter(moment.utc().add(1, 'days').format("MM/DD/YYYY")));
+        this.setState({
+            filteredEvents: tomorrow,
+            filteredByDate: true
+        });
+    };
+
+    filterByNextWeekend = () => {
+        console.log("Filter by next weekend");
+        let nextFri = this.state.events.filter(dateFilter(moment.utc().day(5).format("MM/DD/YYYY")));
+        let nextSat = this.state.events.filter(dateFilter(moment.utc().day(6).format("MM/DD/YYYY")));
+        let nextSun = this.state.events.filter(dateFilter(moment.utc().day(7).format("MM/DD/YYYY")));
+        let nextWeekend = nextFri.concat(nextSat, nextSun);
+        this.setState({
+            filteredEvents: nextWeekend,
+            filteredByDate: true
+        });
+    };
+
     render() {
-        const hasTextFilter = !!this.state.textFilter;
-        const hasDateFilter = !!this.state.dateFilter;
-        console.log("date filter" + hasDateFilter);
-        console.log("text filter" + hasTextFilter);
-
-        var filteredEvents;
-        if (hasTextFilter) {
-            filteredEvents = this.state.events.filter(textFilter(this.state.textFilter));
-        } else if (hasDateFilter) {
-            filteredEvents = this.state.events.filter(dateFilter(this.state.dateFilter));
-        } else {
-            filteredEvents = this.state.events.slice(0);
+        if (!!this.state.textFilter) {
+            this.state.filteredEvents = this.state.events.filter(textFilter(this.state.textFilter));
+            this.state.filteredByDate = false;
+        } else if (!this.state.filteredByDate) {
+            this.state.filteredEvents = this.state.events.slice(0);
         }
-
         return (
             <div>
-                <DayPicker
-                    className={"center"}
-                    onDayClick={day => this.setState({dateFilter: moment.utc(day).format("MM/DD/YYYY")})}/>
-                <br/>
+                <div className="button-container">
+                    <button className="button -regular" onClick={() => this.filterByToday()}>
+                        TODAY
+                    </button>
+                    <button className="button -regular" onClick={() => this.filterByTomorrow()}>
+                        TOMORROW
+                    </button>
+                    <button className="button -regular center" onClick={() => this.filterByNextWeekend()}>
+                        NEXT WEEKEND
+                    </button>
+                </div>
                 <div className="center">
                     <TextFilter
                         onFilter={({target: {value: textFilter}}) => this.setState({textFilter})}
-                        placeholder="Search"
+                        placeholder="SEARCH ALL"
                         className="center"/>
                 </div>
                 <div id="eventContainer" className="center">
-                    {filteredEvents.map(event => {
+                    {this.state.filteredEvents.map(event => {
                         return event;
                     })}
                 </div>
             </div>
-        );
+        )
+            ;
     }
 }
 
