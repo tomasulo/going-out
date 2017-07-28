@@ -128,22 +128,22 @@ export default class EventContainer extends React.Component {
         if (!!this.state.textFilter) {
             this.state.filteredEvents = this.state.events.filter(textFilter(this.state.textFilter));
             this.state.filteredByDate = false;
-        } else if(!this.state.filteredByDate) {
+        } else if (!this.state.filteredByDate) {
             this.state.filteredEvents = this.state.events.slice(0);
         }
         return (
             <div>
-                <button className="pure-button" onClick={() => this.filterByToday()}>
-                    TODAY
-                </button>
-                <button className="pure-button" onClick={() => this.filterByTomorrow()}>
-                    TOMORROW
-                </button>
-                <button className="pure-button" onClick={() => this.filterByNextWeekend()}>
-                    NEXT WEEKEND
-                </button>
-                <br/>
-                <br/>
+                <div className="button-container">
+                    <button className="button -regular" onClick={() => this.filterByToday()}>
+                        TODAY
+                    </button>
+                    <button className="button -regular" onClick={() => this.filterByTomorrow()}>
+                        TOMORROW
+                    </button>
+                    <button className="button -regular center" onClick={() => this.filterByNextWeekend()}>
+                        NEXT WEEKEND
+                    </button>
+                </div>
                 <div className="center">
                     <TextFilter
                         onFilter={({target: {value: textFilter}}) => this.setState({textFilter})}
@@ -156,7 +156,8 @@ export default class EventContainer extends React.Component {
                     })}
                 </div>
             </div>
-        );
+        )
+            ;
     }
 }
 
