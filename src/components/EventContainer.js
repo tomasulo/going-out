@@ -147,7 +147,7 @@ export default class EventContainer extends React.Component {
                 <div className="center">
                     <TextFilter
                         onFilter={({target: {value: textFilter}}) => this.setState({textFilter})}
-                        placeholder="Search all"
+                        placeholder="SEARCH ALL"
                         className="center"/>
                 </div>
                 <div id="eventContainer" className="center">

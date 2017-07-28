@@ -107,9 +107,6 @@ pre {
     justify-content: center;
     align-items: center;
     flex: 0 0 160px;
-
-    box-shadow: 2px 5px 10px rgba($ dark, .1);
-
 }
 
 .button.-regular {
@@ -131,4 +128,8 @@ button:active {
 button:focus {
     outline: 1px dotted #959595;
     outline-offset: -4px;
+}
+
+input {
+    text-align: center;
 }
