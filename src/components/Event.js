@@ -53,7 +53,7 @@ export default class Event extends React.Component {
             content: {
               margin: "0 auto",
               width: "50%",
-              border-radius: "20px",
+              "border-radius": "20px"
             }
           }}
         >
