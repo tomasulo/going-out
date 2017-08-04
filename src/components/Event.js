@@ -23,26 +23,26 @@ export default class Event extends React.Component {
 
     render() {
         return (
-            <div className="event" onClick={this.handleOpenModal}>
-                <div className="header">
-                    <h3>{this.props.name}</h3>
-                    <p className="startTime">
-                        {this.props.startTime}
-                    </p>
-                    <p className="venue">
-                        <b>{this.props.venue.name}</b><br />
-                        {this.props.venue.street}<br />
-                        {this.props.venue.zip}
-                        ,
-                        {" "}
-                        {this.props.city}
-                    </p>
-                </div>
-                <div className="description">
-                    <img src={this.props.coverPicture} alt="coverPicture"/>
-                    <pre>
-            {this.props.description}
-          </pre>
+            <div>
+                <div className="event" onClick={this.handleOpenModal}>
+                    <div className="header">
+                        <h3>{this.props.name}</h3>
+                        <p className="startTime">
+                            {this.props.startTime}
+                        </p>
+                        <p className="venue">
+                            <b>{this.props.venue.name}</b><br/>
+                            {this.props.venue.street}<br/>
+                            {this.props.venue.zip}
+                            ,
+                            {" "}
+                            {this.props.city}
+                        </p>
+                    </div>
+                    <div className="description">
+                        <img src={this.props.coverPicture} alt="coverPicture"/>
+                        <pre>{this.props.description}</pre>
+                    </div>
                 </div>
 
                 <ReactModal
@@ -52,32 +52,32 @@ export default class Event extends React.Component {
                     style={{
                         content: {
                             margin: "0 auto",
-                            width: "50%",
-                            "border-radius": "20px"
+                            width: "35%",
+                            borderRadius: "20px"
                         }
                     }}
                 >
                     <button onClick={this.handleCloseModal}>Close</button>
 
-                    <div className="header">
-                        <h3>{this.props.name}</h3>
-                        <p className="startTime">
-                            {moment(this.props.startTime).format("llll")}
-                        </p>
-                        <p className="venue">
-                            {this.props.venue.name}<br />
-                            {this.props.venue.street}<br />
-                            {this.props.venue.postalcode}
-                            ,
-                            {" "}
-                            {this.props.city}
-                        </p>
-                    </div>
-                    <div className="description">
-                        <img src={this.props.coverPicture} alt="coverPicture"/>
-                        <pre>
-              {this.props.description}
-            </pre>
+                    <div className="modal-event">
+                        <div className="header">
+                            <h3>{this.props.name}</h3>
+                            <p className="startTime">
+                                {this.props.startTime}
+                            </p>
+                            <p className="venue">
+                                <b>{this.props.venue.name}</b><br/>
+                                {this.props.venue.street}<br/>
+                                {this.props.venue.zip}
+                                ,
+                                {" "}
+                                {this.props.city}
+                            </p>
+                        </div>
+                        <div className="description">
+                            <img className="modal-image" src={this.props.coverPicture} alt="coverPicture"/>
+                            <pre>{this.props.description}</pre>
+                        </div>
                     </div>
                 </ReactModal>
             </div>
