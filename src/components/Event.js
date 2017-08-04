@@ -51,6 +51,7 @@ export default class Event extends React.Component {
                     style={{
                         content: {
                             margin: "0 auto",
+                            // TODO adjust width of modal dialog on mobile vs desktop
                             width: "60%",
                             borderRadius: "20px"
                         }
