@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactModal from "react-modal";
-import moment from "moment";
 
 export default class Event extends React.Component {
     constructor() {
@@ -52,7 +51,7 @@ export default class Event extends React.Component {
                     style={{
                         content: {
                             margin: "0 auto",
-                            width: "35%",
+                            width: "60%",
                             borderRadius: "20px"
                         }
                     }}
