@@ -70,12 +70,18 @@ export default class EventContainer extends React.Component {
         apigClient.invokeApi(params, pathTemplate, method, additionalParams)
             .then(response => {
                 const events = response.data.map((eventData) => {
-                    let city = eventData.city.capitalize();
+                    let city = eventData.venue.city;
+                    if (!city) {
+                        city = eventData.city.trim().capitalize();
+                    }
+
                     if (city === 'Munich') {
                         city = 'München'
                     }
+
                     return <Event
                         key={eventData.id}
+                        city={city}
                         description={utf8.decode(base64.decode(eventData.description))}
                         venue={eventData.venue}
                         name={utf8.decode(base64.decode(eventData.name))}
