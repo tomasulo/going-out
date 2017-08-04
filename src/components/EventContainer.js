@@ -79,7 +79,6 @@ export default class EventContainer extends React.Component {
                         description={utf8.decode(base64.decode(eventData.description))}
                         venue={eventData.venue}
                         name={utf8.decode(base64.decode(eventData.name))}
-                        city={city}
                         startTime={moment.utc(eventData.startTime).local().format("llll")}
                         coverPicture={eventData.imageUrl}
                     />

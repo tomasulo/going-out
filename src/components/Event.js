@@ -35,7 +35,7 @@ export default class Event extends React.Component {
                         {this.props.venue.zip}
                         ,
                         {" "}
-                        {this.props.city}
+                        {this.props.venue.city}
                     </p>
                 </div>
                 <div className="description">
@@ -70,7 +70,7 @@ export default class Event extends React.Component {
                             {this.props.venue.postalcode}
                             ,
                             {" "}
-                            {this.props.city}
+                            {this.props.venue.city}
                         </p>
                     </div>
                     <div className="description">
