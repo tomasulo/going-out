@@ -3,6 +3,8 @@ import Event from "./Event";
 import moment from "moment";
 import {TextFilter} from "react-text-filter";
 import "react-day-picker/lib/style.css";
+import { store, addEvent } from "../redux/eventReducer";
+
 
 // TODO why do I need var here?
 var base64 = require('base-64');
@@ -78,6 +80,8 @@ export default class EventContainer extends React.Component {
                     if (city === 'Munich') {
                         city = 'München'
                     }
+
+                    store.dispatch(addEvent(eventData.id, eventData.name));
 
                     return <Event
                         key={eventData.id}

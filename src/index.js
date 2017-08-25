@@ -7,8 +7,6 @@ import Provider from "redux";
 import { store } from "./redux/eventReducer";
 
 ReactDOM.render(
-	<Provider store={store}>
-		<App />
-	</Provider>,
+		<App />,
 	document.getElementById("root")
 );

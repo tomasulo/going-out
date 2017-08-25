@@ -1,13 +1,18 @@
 import {createStore} from "redux";
 
-const initialState = [];
+// TODO why do I need var here?
+var base64 = require('base-64');
+var utf8 = require('utf8');
+
+const INITIAL_STATE = [];
+const ADD = "ADD";
 
 const singleEventReducer = (event, action) => {
     switch (action.type) {
-        case "ADD": {
+        case ADD: {
             return {
                 id: action.id,
-                name: action.name
+                name: utf8.decode(base64.decode(action.name))
             };
         }
         default: {
@@ -16,9 +21,9 @@ const singleEventReducer = (event, action) => {
     }
 };
 
-export const eventReducer = (state = initialState, action) => {
+export const eventReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case "ADD": {
+        case ADD: {
             const newEvent = singleEventReducer(undefined, action);
             return [...state, newEvent];
         }
@@ -29,22 +34,14 @@ export const eventReducer = (state = initialState, action) => {
     }
 };
 
-// todo check redux logger
-
-const addEvent = (id, name) => ({
-    type: "ADD",
+export const addEvent = (id, name) => ({
+    type: ADD,
     id,
     name
 });
 
 export const store = createStore(eventReducer);
 
-console.log("initial state: ", store.getState());
-
 store.subscribe(() => {
     console.log("new state: ", store.getState());
 });
-
-store.dispatch(addEvent(1, "test"));
-store.dispatch(addEvent(2, "test"));
-store.dispatch(addEvent(3, "test3"));
