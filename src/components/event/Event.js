@@ -23,10 +23,8 @@ class Event extends React.Component {
         this.setState({showModal: false});
     }
 
+    // TODO refactor
     render() {
-
-        console.log(this.props);
-
         let name = this.props.name;
         let startTime = this.props.startTime;
         let venue = this.props.venue;
