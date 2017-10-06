@@ -1,0 +1,41 @@
+.event {
+    border: 1px solid black;
+    margin: 20px;
+    width: 300px;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.eventHeader {
+    text-align: center;
+    margin: 20px;
+}
+
+.eventDescription {
+    text-align: center;
+    margin: 20px;
+}
+
+.eventContainer {
+    flex-flow: row wrap;
+    display: flex;
+    justify-content: center;
+}
+
+img {
+    margin-bottom: 20px;
+    border-radius: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+pre {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin: 1em 0px;
+    white-space: pre-wrap;
+    margin-top: auto;
+}

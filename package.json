@@ -3,31 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "aws-api-gateway-client": "^0.2.7",
-    "base-64": "^0.1.0",
-    "moment": "^2.18.1",
     "react": "^15.6.1",
-    "react-datepicker": "^0.46.0",
-    "react-day-picker": "^6.1.0",
-    "react-document-meta": "^2.1.2",
     "react-dom": "^15.6.1",
-    "react-ga": "^2.2.0",
-    "react-modal": "^1.7.7",
-    "react-redux": "^5.0.4",
-    "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1",
-    "react-text-filter": "^3.0.0",
-    "redux": "^3.6.0",
-    "superagent": "^3.5.2",
-    "utf8": "^2.1.2"
-  },
-  "devDependencies": {
-    "react-scripts": "0.9.5"
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.0.12"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "aws-api-gateway-client": "^0.2.9",
+    "base-64": "^0.1.0",
+    "moment": "^2.18.1",
+    "react-document-meta": "^2.1.2",
+    "react-redux": "^5.0.6",
+    "react-text-filter": "^3.0.0",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
+    "utf8": "^2.1.2"
   }
 }
