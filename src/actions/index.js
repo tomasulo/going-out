@@ -51,7 +51,7 @@ export const fetchEvents = (city) => {
         };
 
         let apigClient = apigClientFactory.newClient({
-            invokeUrl: 'https://6milz2rjp1.execute-api.eu-central-1.amazonaws.com/test',
+            invokeUrl: 'https://6milz2rjp1.execute-api.eu-central-1.amazonaws.com/prod',
             accessKey: process.env.REACT_APP_AWS_ACCESS_KEY,
             secretKey: process.env.REACT_APP_AWS_SECRET_KEY,
             region: 'eu-central-1'
