@@ -5,7 +5,7 @@ import {SearchBar} from "./SearchBar";
 
 export const Header = ({city}) => (
     <div>
-        <h1>{city.toUpperCase()}</h1>
+        <h1 className={"center"}>{city.toUpperCase()}</h1>
         <DateSelector/>
         <SearchBar/>
     </div>

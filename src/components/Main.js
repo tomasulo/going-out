@@ -2,7 +2,6 @@ import React from 'react'
 import {BrowserRouter, Route} from 'react-router-dom'
 import DocumentMeta from "react-document-meta";
 import {Navigation} from "./Navigation";
-import './Main.css';
 import {Content} from "./Content";
 
 const meta = {
@@ -14,7 +13,7 @@ const meta = {
 
 export const Main = () => (
     <BrowserRouter>
-        <div className="main">
+        <div>
             <DocumentMeta {...meta} />
             <Route exact path='/' component={Navigation}/>
             <Route path='/:city' component={Content}/>
