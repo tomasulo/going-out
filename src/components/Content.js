@@ -8,7 +8,7 @@ import {Header} from "./header/Header";
 // e.g. Have one component for each city to be able to style them differently
 export const Content = (props) => {
     let city = props.match.params.city;
-    eventStore.dispatch(fetchEvents(props.match.params.city));
+    eventStore.dispatch(fetchEvents(city));
     return (
         <div>
             <Header city={city} />
