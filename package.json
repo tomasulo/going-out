@@ -19,6 +19,7 @@
     "base-64": "^0.1.0",
     "moment": "^2.18.1",
     "react-document-meta": "^2.1.2",
+    "react-modal": "^2.3.3",
     "react-redux": "^5.0.6",
     "react-text-filter": "^3.0.0",
     "redux": "^3.7.2",

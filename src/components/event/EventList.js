@@ -1,4 +1,4 @@
-import {Event} from "./Event";
+import Event from "./Event";
 import React from 'react'
 import "./Event.css";
 
