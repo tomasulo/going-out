@@ -2,9 +2,6 @@ import {applyMiddleware, createStore} from "redux";
 import thunkMiddleware from 'redux-thunk'
 import {createLogger} from 'redux-logger'
 import {RECEIVE_EVENTS, REQUEST_EVENTS, SET_DATE_FILTER, SET_TEXT_FILTER} from "../actions/index";
-import base64 from 'base-64';
-import utf8 from 'utf8';
-import moment from 'moment';
 
 const events = (state = {
     isFetching: false,
@@ -23,13 +20,10 @@ const events = (state = {
             const events = action.events.map((event) => {
                 return {
                     ...event,
-                    name: utf8.decode(base64.decode(event.name)),
-                    description: utf8.decode(base64.decode(event.description)),
-                    startTime: moment(event.startTime).format('llll'),
-                    venue: {
-                        ...event.venue,
-                        name: utf8.decode(base64.decode(event.venue.name))
-                    },
+                    name: event.name,
+                    description: event.description,
+                    startTime: event.startTime,
+                    venue: event.venue,
                 };
             });
             return {

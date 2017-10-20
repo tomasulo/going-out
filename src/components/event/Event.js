@@ -3,6 +3,10 @@ import './Event.css';
 import {EventDescription} from "./EventDescription";
 import {EventHeader} from "./EventHeader";
 import Modal from 'react-modal';
+import moment from 'moment';
+import 'moment/locale/de';
+import base64 from 'base-64';
+import utf8 from 'utf8';
 
 class Event extends React.Component {
     constructor(props) {
@@ -10,6 +14,8 @@ class Event extends React.Component {
         this.state = {
             showModal: false
         };
+
+        moment.locale('de');
 
         this.handleOpenModal = this.handleOpenModal.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
@@ -25,10 +31,13 @@ class Event extends React.Component {
 
     // TODO refactor
     render() {
-        let name = this.props.name;
-        let startTime = this.props.startTime;
-        let venue = this.props.venue;
-        let description = this.props.description;
+        let name = decode(this.props.name);
+        let startTime = moment(this.props.startTime).format('llll');
+        let venue = {
+            ...this.props.venue,
+            name: decode(this.props.venue.name)
+        };
+        let description = decode(this.props.description);
         let imageUrl = this.props.imageUrl;
 
         return (
@@ -60,6 +69,10 @@ class Event extends React.Component {
         );
 
     }
+}
+
+function decode(value) {
+    return utf8.decode(base64.decode(value));
 }
 
 export default Event;
