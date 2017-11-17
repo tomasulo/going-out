@@ -22,6 +22,10 @@ hr {
     text-align: center;
 }
 
+.city-link {
+    font-size: 2em;
+}
+
 .button {
     display: flex;
     overflow: hidden;
