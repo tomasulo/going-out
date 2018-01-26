@@ -1,10 +1,8 @@
 import React from 'react';
-import {Main} from "./components/Main";
-import {Headline} from "./components/header/Headline";
+import StickyLayout from "./components/StickyLayout";
 
 export const App = () => (
     <div>
-        <Headline/>
-        <Main/>
+        <StickyLayout/>
     </div>
 );
