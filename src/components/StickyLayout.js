@@ -2,8 +2,13 @@ import React, {Component} from 'react'
 import {Container, Divider, Dropdown, Header, Menu, Search, Visibility,} from 'semantic-ui-react'
 import {fetchEvents, setDateFilter, setTextFilter} from "../actions";
 import {eventStore} from "../reducers";
-import {ALL, NEXT_WEEKEND, TODAY, TOMORROW} from "./header/DateSelector";
 import {EventContainer} from "../containers/EventContainer";
+
+export const DATE_FILTER_FORMAT = "DD/MM/YYYY";
+export const TODAY = "today";
+export const TOMORROW = "tomorrow";
+export const NEXT_WEEKEND = "next_weekend";
+export const ALL = "all";
 
 const menuStyle = {
     border: 'none',

@@ -1,7 +1,7 @@
 import {connect} from 'react-redux'
 import moment from 'moment';
 import EventList from '../components/event/EventList'
-import {ALL, DATE_FILTER_FORMAT, NEXT_WEEKEND, TODAY, TOMORROW} from "../components/header/DateSelector";
+import {ALL, DATE_FILTER_FORMAT, NEXT_WEEKEND, TODAY, TOMORROW} from "../components/StickyLayout";
 
 const tomorrow = moment.utc().add(1, 'days').format(DATE_FILTER_FORMAT);
 const today = moment.utc().format(DATE_FILTER_FORMAT);
