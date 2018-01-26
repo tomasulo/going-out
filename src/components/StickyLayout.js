@@ -84,10 +84,9 @@ export default class StickyLayout extends Component {
 
         return (
             <Container>
-
-                {/*<Visibility onBottomPassed={this.stickTopMenu}*/}
-                            {/*onBottomVisible={this.unStickTopMenu}*/}
-                            {/*once={false}>*/}
+                <Visibility onBottomPassed={this.stickTopMenu}
+                            onBottomVisible={this.unStickTopMenu}
+                            once={false}>
                     <Menu borderless fluid vertical
                           fixed={menuFixed && 'top'}
                           style={menuFixed ? fixedMenuStyle : menuStyle}>
@@ -112,13 +111,10 @@ export default class StickyLayout extends Component {
                             </Menu.Item>
                         </Container>
                     </Menu>
-
-                {/*</Visibility>*/}
-
+                </Visibility>
                 <Container>
                     <EventContainer/>
                 </Container>
-
             </Container>
 
         )
