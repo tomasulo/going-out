@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import {Container, Dropdown, Header, Menu, Visibility,} from 'semantic-ui-react'
-import {fetchEvents, setDateFilter} from "../actions";
+import {Container, Dropdown, Header, Menu, Search, Visibility,} from 'semantic-ui-react'
+import {fetchEvents, setDateFilter, setTextFilter} from "../actions";
 import {eventStore} from "../reducers";
 import {ALL, NEXT_WEEKEND, TODAY, TOMORROW} from "./header/DateSelector";
 import {EventContainer} from "../containers/EventContainer";
@@ -12,14 +12,16 @@ const menuStyle = {
     marginBottom: '2em',
     marginTop: '2em',
     transition: 'box-shadow 0.5s ease, padding 0.5s ease',
-    display: 'block'
 };
 
 const fixedMenuStyle = {
     backgroundColor: '#fff',
     border: '1px solid #ddd',
     boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)',
-    display: 'block'
+};
+
+const centered = {
+    margin: 'auto'
 };
 
 const cities = [
@@ -63,13 +65,15 @@ export default class StickyLayout extends Component {
     };
 
     handleCityChange = (data) => {
-        console.log(data);
         eventStore.dispatch(fetchEvents(data));
     };
 
     handleDateChange = (data) => {
-        console.log(data);
         eventStore.dispatch(setDateFilter(data));
+    };
+
+    handleSearchChange = (e, {value}) => {
+        eventStore.dispatch(setTextFilter(value));
     };
 
     stickTopMenu = () => this.setState({menuFixed: true})
@@ -81,27 +85,35 @@ export default class StickyLayout extends Component {
         return (
             <Container>
 
-                <Visibility onBottomPassed={this.stickTopMenu}
-                            onBottomVisible={this.unStickTopMenu}
-                            once={false}>
-                    <Menu borderless fluid
+                {/*<Visibility onBottomPassed={this.stickTopMenu}*/}
+                            {/*onBottomVisible={this.unStickTopMenu}*/}
+                            {/*once={false}>*/}
+                    <Menu borderless fluid vertical
                           fixed={menuFixed && 'top'}
                           style={menuFixed ? fixedMenuStyle : menuStyle}>
                         <Container text>
-                            <Menu.Item header><Header as='h1'>I want to go out in &nbsp;
-                                <Dropdown
-                                    onChange={(param, data) => this.handleCityChange(data.value)}
-                                    placeholder='where' pointing options={cities}
-                                    inline/>
-                                &nbsp;
-                                <Dropdown onChange={(param, data) => this.handleDateChange(data.value)}
-                                          placeholder='when' pointing
-                                          options={dateSelection}
-                                          inline/></Header></Menu.Item>
+                            <Menu.Item header style={centered}>
+                                <Header as='h1'>I want to go out in &nbsp;
+                                    <Dropdown
+                                        onChange={(param, data) => this.handleCityChange(data.value)}
+                                        placeholder='where' pointing options={cities}
+                                        inline/>
+                                    &nbsp;
+                                    <Dropdown onChange={(param, data) => this.handleDateChange(data.value)}
+                                              placeholder='when' pointing
+                                              options={dateSelection}
+                                              inline/></Header>
+                            </Menu.Item>
+                            <Menu.Item style={centered}>
+                                <Search
+                                    onSearchChange={this.handleSearchChange}
+                                    showNoResults={false}
+                                />
+                            </Menu.Item>
                         </Container>
                     </Menu>
 
-                </Visibility>
+                {/*</Visibility>*/}
 
                 <Container>
                     <EventContainer/>

@@ -50,7 +50,7 @@ const getVisibleEvents = (textFilter, dateFilter, events) => {
             break;
     }
 
-    if (!textFilter) {
+    if (!textFilter || textFilter.length < 3) {
         return filteredEvents;
     }
 
