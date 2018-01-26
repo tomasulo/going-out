@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {Container, Dropdown, Header, Menu, Visibility,} from 'semantic-ui-react'
-import {Content} from "./Content";
 import {fetchEvents, setDateFilter} from "../actions";
 import {eventStore} from "../reducers";
 import {ALL, NEXT_WEEKEND, TODAY, TOMORROW} from "./header/DateSelector";
+import {EventContainer} from "../containers/EventContainer";
 
 const menuStyle = {
     border: 'none',
@@ -12,12 +12,14 @@ const menuStyle = {
     marginBottom: '2em',
     marginTop: '2em',
     transition: 'box-shadow 0.5s ease, padding 0.5s ease',
+    display: 'block'
 };
 
 const fixedMenuStyle = {
     backgroundColor: '#fff',
     border: '1px solid #ddd',
     boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)',
+    display: 'block'
 };
 
 const cities = [
@@ -77,81 +79,36 @@ export default class StickyLayout extends Component {
         const {menuFixed} = this.state
 
         return (
-            <div>
-                {/* Heads up, style below isn't necessary for correct work of example, simply our docs defines other
-            background color.
-          */}
-                <style>{`
-          html, body {
-            background: #fff;
-          }
-        `}</style>
+            <Container>
 
-                {/* Attaching the top menu is a simple operation, we only switch `fixed` prop add add another styles if it has
-            gone beyond the scope of visibility
-          */}
-                <Visibility
-                    onBottomPassed={this.stickTopMenu}
-                    onBottomVisible={this.unStickTopMenu}
-                    once={false}
-                >
-                    <Menu
-                        borderless
-                        fixed={menuFixed && 'top'}
-                        style={menuFixed ? fixedMenuStyle : menuStyle}
-                    >
+                <Visibility onBottomPassed={this.stickTopMenu}
+                            onBottomVisible={this.unStickTopMenu}
+                            once={false}>
+                    <Menu borderless fluid
+                          fixed={menuFixed && 'top'}
+                          style={menuFixed ? fixedMenuStyle : menuStyle}>
                         <Container text>
-                            <Menu.Item header><Header as='h1'>I want to go out in</Header></Menu.Item>
-                            <Menu.Menu>
-                                <Dropdown onChange={(param, data) => this.handleCityChange(data.value)}
-                                          placeholder='where' pointing options={cities}
-                                          className='link item header'/>
-                            </Menu.Menu>
-                            <Menu.Menu>
+                            <Menu.Item header><Header as='h1'>I want to go out in &nbsp;
+                                <Dropdown
+                                    onChange={(param, data) => this.handleCityChange(data.value)}
+                                    placeholder='where' pointing options={cities}
+                                    inline/>
+                                &nbsp;
                                 <Dropdown onChange={(param, data) => this.handleDateChange(data.value)}
                                           placeholder='when' pointing
                                           options={dateSelection}
-                                          className='link item header'/>
-                            </Menu.Menu>
+                                          inline/></Header></Menu.Item>
                         </Container>
                     </Menu>
+
                 </Visibility>
 
-                <Container text>
-
-                    <Content/>
-
-                    {/*{_.times(3, i => <Paragraph key={i}/>)}*/}
-
-                    {/*/!* Example with overlay menu is more complex, SUI simply clones all elements inside, but we should use a*/}
-                    {/*different approach.*/}
-
-                    {/*An empty Visibility element controls the need to change the fixing of element below, it also uses height*/}
-                    {/*and width params received from its ref for correct display.*/}
-                    {/**!/*/}
-                    {/*<Visibility*/}
-                    {/*offset={80}*/}
-                    {/*once={false}*/}
-                    {/*onTopPassed={this.stickOverlay}*/}
-                    {/*onTopVisible={this.unStickOverlay}*/}
-                    {/*style={overlayFixed ? {...overlayStyle, ...overlayRect} : {}}*/}
-                    {/*/>*/}
-
-                    {/*{_.times(3, i => <Paragraph key={i}/>)}*/}
-                    {/*<LeftImage/>*/}
-
-                    {/*<Paragraph/>*/}
-                    {/*<RightImage/>*/}
-
-                    {/*{_.times(4, i => <Paragraph key={i}/>)}*/}
-                    {/*<LeftImage/>*/}
-
-                    {/*<Paragraph/>*/}
-                    {/*<RightImage/>*/}
-
-                    {/*{_.times(2, i => <Paragraph key={i}/>)}*/}
+                <Container>
+                    <EventContainer/>
                 </Container>
-            </div>
+
+            </Container>
+
         )
     }
 }
