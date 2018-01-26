@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Container, Dropdown, Header, Menu, Search, Visibility,} from 'semantic-ui-react'
+import {Container, Divider, Dropdown, Header, Menu, Search, Visibility,} from 'semantic-ui-react'
 import {fetchEvents, setDateFilter, setTextFilter} from "../actions";
 import {eventStore} from "../reducers";
 import {ALL, NEXT_WEEKEND, TODAY, TOMORROW} from "./header/DateSelector";
@@ -113,6 +113,7 @@ export default class StickyLayout extends Component {
                     </Menu>
                 </Visibility>
                 <Container>
+                    <Divider/>
                     <EventContainer/>
                 </Container>
             </Container>
