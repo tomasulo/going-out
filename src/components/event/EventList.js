@@ -1,13 +1,14 @@
 import {Event} from "./Event";
 import React from 'react'
 import "./Event.css";
+import {Card} from "semantic-ui-react";
 
 const EventList = ({events}) => (
-    <div className="eventContainer">
+    <Card.Group className='centerItems'>
         {events.map(event => (
             <Event key={event.id} {...event} />
         ))}
-    </div>
+    </Card.Group>
 );
 
 export default EventList;

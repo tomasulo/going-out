@@ -3,12 +3,6 @@ import moment from 'moment';
 import EventList from '../components/event/EventList'
 import {ALL, DATE_FILTER_FORMAT, NEXT_WEEKEND, TODAY, TOMORROW} from "../components/StickyLayout";
 
-const tomorrow = moment.utc().add(1, 'days').format(DATE_FILTER_FORMAT);
-const today = moment.utc().format(DATE_FILTER_FORMAT);
-const nextFri = moment.utc().day(5).format(DATE_FILTER_FORMAT);
-const nextSat = moment.utc().day(6).format(DATE_FILTER_FORMAT);
-const nextSun = moment.utc().day(7).format(DATE_FILTER_FORMAT);
-
 const getVisibleEvents = (textFilter, dateFilter, events) => {
 
     let filteredEvents = events;
@@ -20,7 +14,7 @@ const getVisibleEvents = (textFilter, dateFilter, events) => {
         case TODAY:
             filteredEvents = events.filter(event => {
                 return (
-                    moment.utc(event.startTime).format(DATE_FILTER_FORMAT) === today
+                    moment.utc(event.startTime).format(DATE_FILTER_FORMAT) === moment.utc(event.startTime).format(DATE_FILTER_FORMAT)
                 );
             });
             break;
@@ -28,20 +22,20 @@ const getVisibleEvents = (textFilter, dateFilter, events) => {
         case TOMORROW:
             filteredEvents = events.filter(event => {
                 return (
-                    moment.utc(event.startTime).format(DATE_FILTER_FORMAT) === tomorrow
+                    moment.utc(event.startTime).format(DATE_FILTER_FORMAT) === moment.utc().add(1, 'days').format(DATE_FILTER_FORMAT)
                 );
             });
             break;
 
         case NEXT_WEEKEND:
             let eventsOnFri = events.filter(event => {
-                return moment.utc(event.startTime).format(DATE_FILTER_FORMAT) === nextFri
+                return moment.utc(event.startTime).format(DATE_FILTER_FORMAT) === moment.utc().day(5).format(DATE_FILTER_FORMAT)
             });
             let eventsOnSat = events.filter(event => {
-                return moment.utc(event.startTime).format(DATE_FILTER_FORMAT) === nextSat
+                return moment.utc(event.startTime).format(DATE_FILTER_FORMAT) === moment.utc().day(6).format(DATE_FILTER_FORMAT)
             });
             let eventsOnSun = events.filter(event => {
-                return moment.utc(event.startTime).format(DATE_FILTER_FORMAT) === nextSun
+                return moment.utc(event.startTime).format(DATE_FILTER_FORMAT) === moment.utc().day(7).format(DATE_FILTER_FORMAT)
             });
             filteredEvents = eventsOnFri.concat(eventsOnSat, eventsOnSun);
             break;
