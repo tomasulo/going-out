@@ -31,7 +31,7 @@ const centered = {
 
 const cities = [
     {
-        text: 'Munich',
+        text: 'München',
         value: 'munich'
     },
     {
