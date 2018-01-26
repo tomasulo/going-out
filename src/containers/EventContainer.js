@@ -58,9 +58,9 @@ const getVisibleEvents = (textFilter, dateFilter, events) => {
         return (
             event.description.toLowerCase().indexOf(textFilter.toLowerCase()) !== -1
             || event.name.toLowerCase().indexOf(textFilter.toLowerCase()) !== -1
-            || event.venue.name.toLowerCase().indexOf(textFilter.toLowerCase()) !== -1                );
+            || event.venue.name.toLowerCase().indexOf(textFilter.toLowerCase()) !== -1);
     });
-}
+};
 
 const mapStateToProps = state => {
     return {
