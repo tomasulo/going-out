@@ -26,8 +26,8 @@ export const Event = (props) => {
                 <Modal.Content image scrolling>
                     <Modal.Description>
                         <p>{startTime}</p>
-                        <Venue {...venue} />
                         <EventDescription description={description} imageUrl={imageUrl}/>
+                        <Venue {...venue} />
                     </Modal.Description>
                 </Modal.Content>
             </Modal>
