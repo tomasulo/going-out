@@ -31,16 +31,20 @@ const centered = {
 
 const cities = [
     {
+        text: 'Augsburg',
+        value: 'augsburg'
+    },
+    {
         text: 'München',
         value: 'munich'
     },
     {
-        text: 'Regensburg',
-        value: 'regensburg'
-    },
-    {
         text: 'Passau',
         value: 'passau'
+    },
+    {
+        text: 'Regensburg',
+        value: 'regensburg'
     }
 ];
 
