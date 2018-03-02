@@ -29,6 +29,7 @@ const events = (state = {
                     name: decode(event.name),
                     description: decode(event.description),
                     startTime: event.startTime,
+                    endTime: event.endTime,
                     venue: {
                         ...event.venue,
                         name: decode(event.venue.name)

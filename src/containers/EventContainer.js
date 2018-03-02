@@ -14,7 +14,7 @@ const getVisibleEvents = (textFilter, dateFilter, events) => {
         case TODAY:
             filteredEvents = events.filter(event => {
                 return (
-                    moment.utc(event.startTime).format(DATE_FILTER_FORMAT) === moment.utc(event.startTime).format(DATE_FILTER_FORMAT)
+                    moment.utc(event.startTime).format(DATE_FILTER_FORMAT) === moment.utc().format(DATE_FILTER_FORMAT)
                 );
             });
             break;
