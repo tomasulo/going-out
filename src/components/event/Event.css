@@ -50,3 +50,7 @@ pre {
     margin-left:auto;
     margin-right:auto;
 }
+
+.small {
+    width: 200px !important;
+}

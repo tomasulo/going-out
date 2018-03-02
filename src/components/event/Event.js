@@ -16,7 +16,7 @@ export const Event = (props) => {
 
     return (
         <Modal trigger={
-            <Card>
+            <Card className={"small"}>
                 <Image src={props.imageUrl} size='medium'/>
                 <Card.Content>
                     <Card.Header>{props.name}</Card.Header>
